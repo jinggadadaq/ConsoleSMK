@@ -8,15 +8,16 @@ import (
 	"backend/internal/model"
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v5"
-	// "database/sql"
+	"database/sql"
+	"golang.org/x/crypto/bcrypt"
 )
 
 type AuthHandler struct {
-	// DB *sql.DB // Can receive DB connection if needed
+	DB *sql.DB
 }
 
-func NewAuthHandler() *AuthHandler {
-	return &AuthHandler{}
+func NewAuthHandler(db *sql.DB) *AuthHandler {
+	return &AuthHandler{DB: db}
 }
 
 func (h *AuthHandler) Login(c *gin.Context) {
@@ -26,21 +27,32 @@ func (h *AuthHandler) Login(c *gin.Context) {
 		return
 	}
 
-	// Mock DB check
+	// Cek Database (Real DB Integration)
 	var user model.User
-	var isFirstLogin = true
+	var passwordHash string
+	var isFirstLogin = false
 
-	// Simulate db validation
-	if req.Email == "admin@smkn1kutasari.sch.id" && req.Password == "Admin@123" {
-		user = model.User{ID: "u123", Name: "Admin", Role: "admin", Email: req.Email}
-	} else if req.Email == "siswa1@smkn1kutasari.sch.id" && req.Password == "Siswa@123" {
-		if req.TokenAkses == "" {
-			c.JSON(http.StatusUnauthorized, model.Error("Token Akses Lab diperlukan untuk siswa"))
-			return
-		}
-		user = model.User{ID: "s123", Name: "Siswa 1", Role: "siswa", Email: req.Email}
-	} else {
-		c.JSON(http.StatusUnauthorized, model.Error("Email atau password salah"))
+	err := h.DB.QueryRow("SELECT id, name, email, role, password_hash FROM users WHERE email = $1", req.Email).
+		Scan(&user.ID, &user.Name, &user.Email, &user.Role, &passwordHash)
+	
+	if err == sql.ErrNoRows {
+		c.JSON(http.StatusUnauthorized, model.Error("Email tidak terdaftar di sistem"))
+		return
+	} else if err != nil {
+		c.JSON(http.StatusInternalServerError, model.Error("Terjadi kesalahan server database"))
+		return
+	}
+
+	// Verifikasi Password dengan Bcrypt
+	err = bcrypt.CompareHashAndPassword([]byte(passwordHash), []byte(req.Password))
+	if err != nil {
+		c.JSON(http.StatusUnauthorized, model.Error("Password SALAH"))
+		return
+	}
+
+	// Validasi tambahan token untuk pelajar
+	if user.Role == "siswa" && req.TokenAkses == "" {
+		c.JSON(http.StatusUnauthorized, model.Error("Token Akses Lab wajib disertakan saat masuk"))
 		return
 	}
 

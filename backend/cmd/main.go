@@ -4,6 +4,7 @@ import (
 	"log"
 	"os"
 
+	"backend/internal/database"
 	"backend/internal/handler"
 	"backend/internal/middleware"
 	"github.com/gin-gonic/gin"
@@ -40,8 +41,12 @@ func main() {
 	})
 	router.Use(middleware.LoggerMiddleware())
 
+	// Koneksi DB
+	db := database.Connect()
+	defer db.Close()
+
 	// Init Handlers
-	authH := handler.NewAuthHandler()
+	authH := handler.NewAuthHandler(db)
 	labH := handler.NewLabHandler()
 	ujianH := handler.NewUjianHandler()
 	userH := handler.NewUserHandler()

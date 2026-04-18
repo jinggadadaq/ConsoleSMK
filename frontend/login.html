@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Login - SMKN 1 Kutasari | Lab Console</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap"
+    rel="stylesheet">
   <style>
     :root {
       --primary: #16a34a;
@@ -40,13 +42,27 @@
 
     /* Animations */
     @keyframes fadeInLeft {
-      from { opacity: 0; transform: translateX(-20px); }
-      to { opacity: 1; transform: translateX(0); }
+      from {
+        opacity: 0;
+        transform: translateX(-20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
     }
 
     @keyframes fadeInUp {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     /* Left Side */
@@ -82,7 +98,7 @@
     .top-section img {
       width: 56px;
       object-fit: contain;
-      filter: drop-shadow(0 2px 8px rgba(0,0,0,0.12));
+      filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.12));
       margin-bottom: 12px;
     }
 
@@ -227,7 +243,9 @@
       margin-bottom: 8px;
     }
 
-    .label-header label { margin-bottom: 0; }
+    .label-header label {
+      margin-bottom: 0;
+    }
 
     .forgot-pass {
       font-size: 12px;
@@ -237,7 +255,9 @@
       transition: color 0.2s;
     }
 
-    .forgot-pass:hover { color: var(--primary-hover); }
+    .forgot-pass:hover {
+      color: var(--primary-hover);
+    }
 
     .input-wrapper {
       position: relative;
@@ -317,11 +337,12 @@
     }
   </style>
 </head>
+
 <body>
 
   <div class="left-side">
     <img src="assets/LOGO-TKJ.svg" alt="Watermark" class="watermark">
-    
+
     <div class="left-content top-section">
       <img src="assets/LOGO-SMKKU.svg" alt="Logo SMKN 1 Kutasari">
       <div class="brand-label">SMKN 1 KUTASARI &middot; LAB CONSOLE</div>
@@ -330,7 +351,8 @@
     <div class="left-content middle-section">
       <div class="heading-1">MASUK KE</div>
       <div class="heading-2">LAB KAMU</div>
-      <p class="description">Tingkatkan kemampuan IT-mu, raih masa depan bersama kami. Akses lab praktik Linux, Networking, dan Cloud secara terpusat.</p>
+      <p class="description">Tingkatkan kemampuan IT-mu, raih masa depan bersama kami. Akses lab praktik Linux,
+        Networking, dan Cloud secara terpusat.</p>
       <div class="badge-row">
         <span class="badge">🖥 Realtime Labs</span>
         <span class="badge">📋 Pusat Ujian</span>
@@ -367,14 +389,15 @@
             <a href="#" class="forgot-pass">Lupa password?</a>
           </div>
           <div class="input-wrapper">
-            <input type="password" id="password" class="form-input" placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;" required>
+            <input type="password" id="password" class="form-input"
+              placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;" required>
             <button type="button" class="toggle-pass" id="togglePass" aria-label="Toggle Password">👁</button>
           </div>
         </div>
 
         <div class="field-group token-field" id="tokenField">
           <label for="token">Token Akses Lab</label>
-          <input type="text" id="token" class="form-input" placeholder="Token dari guru / admin">
+          <input type="text" id="token" class="form-input" placeholder="Token dari guru">
         </div>
 
         <button type="submit" class="submit-btn" id="submitBtn">Masuk ke Lab &rarr;</button>
@@ -421,20 +444,50 @@
         }
       });
 
-      // Form Submit
-      loginForm.addEventListener('submit', (e) => {
+      // Form Submit (Hubungkan ke Database Go-Lang)
+      loginForm.addEventListener('submit', async (e) => {
         e.preventDefault();
-        // Simpan role ke localStorage untuk merubah UI Dashboard
-        localStorage.setItem('userRole', currentRole);
         
         const btn = document.getElementById('submitBtn');
-        btn.innerHTML = 'Otentikasi...';
-        
-        setTimeout(() => {
-          window.location.href = 'dashboard.html';
-        }, 500);
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+        const tokenAkses = document.getElementById('token').value;
+
+        btn.innerHTML = 'Otentikasi ke DB...';
+        btn.disabled = true;
+
+        try {
+          // Cari endpoint backend. Jika pakai docker (port 80) pakai path relatf, jika live server pakai absolute url port 8080
+          const destUrl = window.location.port !== "" ? 'http://localhost:8080/api/auth/login' : '/api/auth/login';
+
+          const res = await fetch(destUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ 
+              email: email, 
+              password: password, 
+              token_akses: currentRole === 'siswa' ? tokenAkses : '' 
+            })
+          });
+
+          const data = await res.json();
+          if (res.ok && data.sukses) {
+            localStorage.setItem('userRole', data.data.user.role);
+            localStorage.setItem('apiToken', data.data.token);
+            window.location.href = 'dashboard.html';
+          } else {
+            alert(data.pesan || "Authentikasi gagal");
+            btn.innerHTML = 'Masuk ke Lab &rarr;';
+            btn.disabled = false;
+          }
+        } catch (err) {
+            alert("Gagal terhubung ke Database. Pastikan Server Golang/Docker (Port 8080) menyala!");
+            btn.innerHTML = 'Masuk ke Lab &rarr;';
+            btn.disabled = false;
+        }
       });
     });
   </script>
 </body>
+
 </html>
