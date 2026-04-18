@@ -5,179 +5,557 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sertifikat Kelulusan - SMKN 1 Kutasari</title>
-
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap"
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;0,900;1,700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
     rel="stylesheet">
-
   <style>
     :root {
-      --primary: #16a34a;
+      --green-primary: #16a34a;
+      --green-dark: #14532d;
+      --green-mid: #15803d;
+      --green-light: #bbf7d0;
+      --green-xlight: #dcfce7;
+      --green-pale: #f0fdf4;
+      --gold: #b8860b;
+      --gold-light: #d4a017;
       --dark: #0f172a;
       --gray: #64748b;
+      --gray-light: #94a3b8;
     }
 
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      font-family: 'Plus Jakarta Sans', sans-serif;
     }
 
     body {
-      background: #f1f5f9;
+      background: #e8ede9;
       display: flex;
+      flex-direction: column;
       justify-content: center;
       align-items: center;
       min-height: 100vh;
+      padding: 40px 20px;
+      font-family: 'Plus Jakarta Sans', sans-serif;
     }
 
-    /* CONTAINER */
+    /* ── PRINT BUTTON ── */
+    .print-btn {
+      margin-bottom: 24px;
+      padding: 10px 28px;
+      background: var(--green-primary);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      letter-spacing: 0.5px;
+      transition: background 0.2s;
+    }
+
+    .print-btn:hover {
+      background: var(--green-mid);
+    }
+
+    /* ── CERTIFICATE WRAPPER ── */
+    .cert-wrap {
+      width: 1122px;
+      position: relative;
+    }
+
+    /* ── CERTIFICATE ── */
     .certificate {
       width: 1122px;
       height: 794px;
-      background: #fff;
+      background: #ffffff;
       position: relative;
-      padding: 60px 80px;
+      overflow: hidden;
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
     }
 
-    /* BORDER */
+    /* ── DECORATIVE CORNER BANDS ── */
+    .corner-tl,
+    .corner-tr,
+    .corner-bl,
+    .corner-br {
+      position: absolute;
+      width: 120px;
+      height: 120px;
+      z-index: 2;
+    }
+
+    .corner-tl {
+      top: 0;
+      left: 0;
+    }
+
+    .corner-tr {
+      top: 0;
+      right: 0;
+      transform: scaleX(-1);
+    }
+
+    .corner-bl {
+      bottom: 0;
+      left: 0;
+      transform: scaleY(-1);
+    }
+
+    .corner-br {
+      bottom: 0;
+      right: 0;
+      transform: scale(-1);
+    }
+
+    .corner-tl svg,
+    .corner-tr svg,
+    .corner-bl svg,
+    .corner-br svg {
+      width: 120px;
+      height: 120px;
+    }
+
+    /* ── OUTER & INNER BORDER ── */
     .border-outer {
       position: absolute;
-      inset: 20px;
-      border: 6px solid var(--primary);
+      inset: 18px;
+      border: 3px solid var(--green-primary);
+      z-index: 1;
     }
 
     .border-inner {
       position: absolute;
-      inset: 35px;
-      border: 2px solid #bbf7d0;
+      inset: 26px;
+      border: 1px solid var(--green-light);
+      z-index: 1;
     }
 
-    /* WATERMARK */
+    /* ── TOP COLOR BAR ── */
+    .top-bar {
+      height: 8px;
+      background: linear-gradient(90deg, var(--green-dark) 0%, var(--green-primary) 40%, var(--green-mid) 70%, #22c55e 100%);
+      flex-shrink: 0;
+    }
+
+    .bottom-bar {
+      height: 8px;
+      background: linear-gradient(90deg, #22c55e 0%, var(--green-mid) 30%, var(--green-primary) 60%, var(--green-dark) 100%);
+      margin-top: auto;
+      flex-shrink: 0;
+    }
+
+    /* ── WATERMARK ── */
     .watermark {
       position: absolute;
-      width: 500px;
-      opacity: 0.04;
+      width: 460px;
+      height: 460px;
+      opacity: 0.035;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
+      object-fit: contain;
+      pointer-events: none;
+      z-index: 0;
     }
 
-    /* HEADER */
+    /* ── BACKGROUND PATTERN ── */
+    .bg-pattern {
+      position: absolute;
+      inset: 0;
+      background-image:
+        radial-gradient(circle at 15% 50%, rgba(22, 163, 74, 0.04) 0%, transparent 50%),
+        radial-gradient(circle at 85% 50%, rgba(22, 163, 74, 0.04) 0%, transparent 50%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── MAIN CONTENT ── */
+    .content {
+      position: relative;
+      z-index: 3;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 28px 70px 22px;
+      flex: 1;
+    }
+
+    /* ── HEADER ── */
     .header {
+      width: 100%;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      margin-bottom: 10px;
     }
 
-    .header img {
-      height: 80px;
+    .logo-box {
+      display: flex;
+      align-items: center;
+      gap: 12px;
     }
 
-    /* TITLE */
-    .title {
-      text-align: center;
-      margin-top: 10px;
+    .logo-img {
+      height: 72px;
+      width: 72px;
+      object-fit: contain;
+      filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.15));
     }
 
-    .title h1 {
-      font-size: 42px;
-      color: var(--primary);
-      letter-spacing: 4px;
+    .school-info {
+      text-align: left;
     }
 
-    .subtitle {
-      margin-top: 10px;
-      font-size: 16px;
-      letter-spacing: 6px;
-      color: var(--gray);
-    }
-
-    /* NAME */
-    .name-section {
-      text-align: center;
-      margin: 30px 0;
-    }
-
-    .name-label {
-      color: var(--gray);
-      font-size: 16px;
-    }
-
-    .name {
-      font-size: 44px;
+    .school-name {
+      font-size: 14px;
       font-weight: 800;
-      color: var(--dark);
-      border-bottom: 3px solid #e2e8f0;
-      display: inline-block;
-      padding: 5px 40px;
-      margin-top: 10px;
+      color: var(--green-dark);
+      letter-spacing: 0.5px;
+      line-height: 1.2;
     }
 
-    /* CONTENT */
-    .description {
-      text-align: center;
-      max-width: 700px;
-      margin: auto;
+    .school-sub {
+      font-size: 11px;
       color: var(--gray);
-      line-height: 1.6;
+      font-weight: 500;
+      letter-spacing: 0.3px;
+      margin-top: 2px;
     }
 
-    .course {
+    .school-address {
+      font-size: 10px;
+      color: var(--gray-light);
+      margin-top: 1px;
+    }
+
+    /* Divider garis tengah header */
+    .header-divider {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      flex: 1;
+      padding: 0 20px;
+    }
+
+    .header-divider .line-top {
+      width: 100%;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--green-primary), transparent);
+      margin-bottom: 6px;
+    }
+
+    .header-divider .kop-text {
+      font-size: 10px;
+      letter-spacing: 3px;
+      color: var(--gray-light);
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+
+    .header-divider .line-bot {
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--green-light), transparent);
+      margin-top: 6px;
+    }
+
+    /* ── ORNAMENT STRIP ── */
+    .ornament-strip {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      gap: 0;
+      margin: 4px 0 10px;
+    }
+
+    .ornament-strip .strip-line {
+      flex: 1;
+      height: 1.5px;
+      background: linear-gradient(90deg, transparent, var(--green-light), var(--green-primary), var(--green-light), transparent);
+    }
+
+    .ornament-strip .diamond {
+      width: 8px;
+      height: 8px;
+      background: var(--green-primary);
+      transform: rotate(45deg);
+      margin: 0 6px;
+      flex-shrink: 0;
+    }
+
+    .ornament-strip .diamond-sm {
+      width: 5px;
+      height: 5px;
+      background: var(--green-light);
+      transform: rotate(45deg);
+      margin: 0 4px;
+      flex-shrink: 0;
+    }
+
+    /* ── TITLE SECTION ── */
+    .title-section {
       text-align: center;
-      margin-top: 15px;
+      margin-bottom: 6px;
+    }
+
+    .cert-label {
+      font-size: 11px;
+      letter-spacing: 5px;
+      color: var(--gray-light);
+      text-transform: uppercase;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .cert-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 46px;
+      font-weight: 900;
+      color: var(--green-dark);
+      letter-spacing: 3px;
+      line-height: 1;
+      text-shadow: 0 1px 0 rgba(22, 163, 74, 0.15);
+    }
+
+    .cert-subtitle {
+      font-size: 11px;
+      letter-spacing: 5px;
+      color: var(--green-primary);
+      text-transform: uppercase;
+      font-weight: 700;
+      margin-top: 6px;
+    }
+
+    /* ── RECIPIENT SECTION ── */
+    .recipient-section {
+      text-align: center;
+      margin: 10px 0 6px;
+      width: 100%;
+    }
+
+    .given-to {
+      font-size: 13px;
+      color: var(--gray);
+      font-weight: 500;
+      letter-spacing: 1px;
+      margin-bottom: 4px;
+    }
+
+    .recipient-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 48px;
+      font-weight: 800;
+      font-style: italic;
+      color: var(--dark);
+      line-height: 1;
+      position: relative;
+      display: inline-block;
+      padding: 2px 10px 10px;
+    }
+
+    .recipient-name::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80%;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--green-primary), transparent);
+    }
+
+    /* ── DESCRIPTION ── */
+    .desc-text {
+      font-size: 13px;
+      color: var(--gray);
+      text-align: center;
+      line-height: 1.6;
+      margin: 8px 0 4px;
+      max-width: 600px;
+      font-weight: 400;
+    }
+
+    /* ── COURSE NAME ── */
+    .course-name {
+      font-family: 'Playfair Display', serif;
       font-size: 22px;
       font-weight: 700;
-      color: var(--primary);
-    }
-
-    .badge {
-      margin-top: 15px;
+      color: var(--green-mid);
       text-align: center;
+      margin: 4px 0;
+      letter-spacing: 0.5px;
     }
 
-    .badge span {
-      background: #ecfdf5;
-      border: 1px solid #bbf7d0;
-      padding: 10px 30px;
+    /* ── BADGE ── */
+    .grade-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--green-pale);
+      border: 1.5px solid var(--green-light);
       border-radius: 999px;
-      font-weight: 700;
-      color: #15803d;
+      padding: 7px 28px;
+      margin: 6px auto;
     }
 
-    /* FOOTER */
+    .grade-badge .dot {
+      width: 7px;
+      height: 7px;
+      background: var(--green-primary);
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .grade-badge .grade-text {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--green-dark);
+      letter-spacing: 0.5px;
+    }
+
+    /* ── FOOTER ── */
     .footer {
+      width: 100%;
       display: flex;
       justify-content: space-between;
-      margin-top: 40px;
+      align-items: flex-end;
+      margin-top: 10px;
     }
 
     .signature {
       text-align: center;
-      width: 280px;
+      width: 260px;
     }
 
-    .line {
-      border-top: 1px solid #000;
-      margin: 40px 0 8px;
+    .sig-label {
+      font-size: 11px;
+      color: var(--gray-light);
+      font-weight: 500;
+      letter-spacing: 0.5px;
+      margin-bottom: 4px;
     }
 
-    .meta {
-      position: absolute;
-      bottom: 25px;
+    /* Area ruang kosong untuk tanda tangan */
+    .sig-space {
+      height: 64px;
       width: 100%;
-      text-align: center;
+      position: relative;
+      margin-bottom: 0;
+    }
+
+    /* Garis putus-putus tipis sebagai panduan tanda tangan */
+    .sig-space::before {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 10%;
+      width: 80%;
+      border-bottom: 1px dashed #d1d5db;
+    }
+
+    /* Teks hint "ttd" kecil di pojok kiri atas area tanda tangan */
+    .sig-space::after {
+      content: '( tanda tangan )';
+      position: absolute;
+      top: 6px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 9px;
+      color: #d1d5db;
+      letter-spacing: 1.5px;
+      font-style: italic;
+      white-space: nowrap;
+    }
+
+    .sig-line {
+      width: 90%;
+      margin: 0 auto;
+      height: 1.5px;
+      background: linear-gradient(90deg, transparent 0%, var(--green-light) 20%, var(--green-primary) 50%, var(--green-light) 80%, transparent 100%);
+      margin-bottom: 8px;
+    }
+
+    .sig-name {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--dark);
+    }
+
+    .sig-role {
       font-size: 11px;
       color: var(--gray);
+      margin-top: 2px;
     }
 
-    /* PRINT */
+    /* ── CERT ID CENTER ── */
+    .cert-center {
+      text-align: center;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+      padding-bottom: 4px;
+    }
+
+    .cert-seal {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: var(--green-pale);
+      border: 2px solid var(--green-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 6px;
+      position: relative;
+    }
+
+    .cert-seal::before {
+      content: '✓';
+      font-size: 28px;
+      color: var(--green-primary);
+      font-weight: 900;
+    }
+
+    .cert-id-label {
+      font-size: 9px;
+      letter-spacing: 2px;
+      color: var(--gray-light);
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+
+    .cert-id-val {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--gray);
+      letter-spacing: 1px;
+      margin-top: 2px;
+    }
+
+    /* ── PRINT ── */
     @media print {
       body {
         background: white;
+        padding: 0;
+      }
+
+      .print-btn {
+        display: none;
+      }
+
+      .cert-wrap {
+        width: 297mm;
+      }
+
+      .certificate {
+        width: 297mm;
+        height: 210mm;
       }
     }
   </style>
@@ -185,61 +563,175 @@
 
 <body>
 
-  <div class="certificate">
+  <button class="print-btn" onclick="window.print()">🖨️ Cetak Sertifikat</button>
 
-    <div class="border-outer"></div>
-    <div class="border-inner"></div>
+  <div class="cert-wrap">
+    <div class="certificate">
 
-    <img src="assets/LOGO-TKJ.svg" class="watermark">
+      <!-- Background effects -->
+      <div class="bg-pattern"></div>
+      <div class="border-outer"></div>
+      <div class="border-inner"></div>
 
-    <!-- HEADER -->
-    <div class="header">
-      <img src="assets/LOGO-SMKKU.svg">
-      <img src="assets/LOGO-TKJ.svg">
-    </div>
+      <!-- Watermark -->
+      <img src="assets/LOGO-TKJ.svg" class="watermark" alt="">
 
-    <!-- TITLE -->
-    <div class="title">
-      <h1>SERTIFIKAT KELULUSAN</h1>
-      <div class="subtitle">IT LAB CONSOLE • SMKN 1 KUTASARI</div>
-    </div>
-
-    <!-- NAME -->
-    <div class="name-section">
-      <div class="name-label">Diberikan kepada:</div>
-      <div class="name">Budi Santoso</div>
-    </div>
-
-    <!-- DESCRIPTION -->
-    <div class="description">
-      Atas dedikasi dan pencapaian kompetensi dalam menyelesaikan kurikulum praktik laboratorium:
-    </div>
-
-    <div class="course">"Administrasi Linux Server Dasar"</div>
-
-    <div class="badge">
-      <span>Predikat: SANGAT BAIK (Nilai: 95)</span>
-    </div>
-
-    <!-- FOOTER -->
-    <div class="footer">
-      <div class="signature">
-        <div style="color: var(--gray); font-size: 14px;">Kutasari, 18 April 2026</div>
-        <div class="line"></div>
-        <strong>Drs. Nama Kepala Sekolah, M.Pd.</strong>
-        <div style="color: var(--gray); font-size: 13px;">Kepala Sekolah</div>
+      <!-- Corner decorations (SVG) -->
+      <div class="corner-tl">
+        <svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M0 0 L50 0 L50 4 L4 4 L4 50 L0 50 Z" fill="#16a34a" />
+          <path d="M0 0 L30 0 L30 2 L2 2 L2 30 L0 30 Z" fill="#bbf7d0" />
+          <circle cx="50" cy="4" r="4" fill="#16a34a" />
+          <circle cx="4" cy="50" r="4" fill="#16a34a" />
+          <path d="M8 8 L35 8 L35 10 L10 10 L10 35 L8 35 Z" fill="#dcfce7" opacity="0.8" />
+        </svg>
+      </div>
+      <div class="corner-tr">
+        <svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M0 0 L50 0 L50 4 L4 4 L4 50 L0 50 Z" fill="#16a34a" />
+          <path d="M0 0 L30 0 L30 2 L2 2 L2 30 L0 30 Z" fill="#bbf7d0" />
+          <circle cx="50" cy="4" r="4" fill="#16a34a" />
+          <circle cx="4" cy="50" r="4" fill="#16a34a" />
+          <path d="M8 8 L35 8 L35 10 L10 10 L10 35 L8 35 Z" fill="#dcfce7" opacity="0.8" />
+        </svg>
+      </div>
+      <div class="corner-bl">
+        <svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M0 0 L50 0 L50 4 L4 4 L4 50 L0 50 Z" fill="#16a34a" />
+          <path d="M0 0 L30 0 L30 2 L2 2 L2 30 L0 30 Z" fill="#bbf7d0" />
+          <circle cx="50" cy="4" r="4" fill="#16a34a" />
+          <circle cx="4" cy="50" r="4" fill="#16a34a" />
+          <path d="M8 8 L35 8 L35 10 L10 10 L10 35 L8 35 Z" fill="#dcfce7" opacity="0.8" />
+        </svg>
+      </div>
+      <div class="corner-br">
+        <svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M0 0 L50 0 L50 4 L4 4 L4 50 L0 50 Z" fill="#16a34a" />
+          <path d="M0 0 L30 0 L30 2 L2 2 L2 30 L0 30 Z" fill="#bbf7d0" />
+          <circle cx="50" cy="4" r="4" fill="#16a34a" />
+          <circle cx="4" cy="50" r="4" fill="#16a34a" />
+          <path d="M8 8 L35 8 L35 10 L10 10 L10 35 L8 35 Z" fill="#dcfce7" opacity="0.8" />
+        </svg>
       </div>
 
-      <div class="signature">
-        <div style="color: var(--gray); font-size: 14px;">Ketua Program Keahlian</div>
-        <div class="line"></div>
-        <strong>Kepala Program TKJ</strong>
-        <div style="color: var(--gray); font-size: 13px;">Guru Produktif IT</div>
+      <!-- Top color bar -->
+      <div class="top-bar"></div>
+
+      <!-- Main Content -->
+      <div class="content">
+
+        <!-- HEADER / KOP -->
+        <div class="header">
+          <div class="logo-box">
+            <img src="assets/LOGO-SMKKU.svg" class="logo-img" alt="Logo SMKN 1 Kutasari">
+            <div class="school-info">
+              <div class="school-name">SMK NEGERI 1 KUTASARI</div>
+              <div class="school-sub">Kabupaten Purbalingga, Jawa Tengah</div>
+              <div class="school-address">Jl. Raya Kutasari, Purbalingga 53361</div>
+            </div>
+          </div>
+
+          <div class="header-divider">
+            <div class="line-top"></div>
+            <div class="kop-text">Lembaga Pendidikan Kejuruan</div>
+            <div class="line-bot"></div>
+          </div>
+
+          <div class="logo-box" style="flex-direction: row-reverse;">
+            <img src="assets/LOGO-TKJ.svg" class="logo-img" alt="Logo TKJ">
+            <div class="school-info" style="text-align: right;">
+              <div class="school-name">JURUSAN TKJ</div>
+              <div class="school-sub">Teknik Komputer & Jaringan</div>
+              <div class="school-address">Akreditasi: A (Sangat Baik)</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Ornament -->
+        <div class="ornament-strip">
+          <div class="strip-line"></div>
+          <div class="diamond-sm" style="width:5px;height:5px;background:#bbf7d0;transform:rotate(45deg);margin:0 4px;">
+          </div>
+          <div class="diamond"></div>
+          <div class="diamond-sm" style="width:5px;height:5px;background:#bbf7d0;transform:rotate(45deg);margin:0 4px;">
+          </div>
+          <div class="diamond"></div>
+          <div class="diamond-sm" style="width:5px;height:5px;background:#bbf7d0;transform:rotate(45deg);margin:0 4px;">
+          </div>
+          <div class="strip-line"></div>
+        </div>
+
+        <!-- TITLE -->
+        <div class="title-section">
+          <div class="cert-label">Dengan bangga mempersembahkan</div>
+          <div class="cert-title">SERTIFIKAT KELULUSAN</div>
+          <div class="cert-subtitle">IT Lab Console &nbsp;•&nbsp; SMKN 1 Kutasari</div>
+        </div>
+
+        <!-- Ornament bawah title -->
+        <div class="ornament-strip" style="margin: 6px 0;">
+          <div class="strip-line"></div>
+          <div class="diamond-sm" style="width:5px;height:5px;background:#bbf7d0;transform:rotate(45deg);margin:0 4px;">
+          </div>
+          <div class="diamond"></div>
+          <div class="diamond-sm" style="width:5px;height:5px;background:#bbf7d0;transform:rotate(45deg);margin:0 4px;">
+          </div>
+          <div class="strip-line"></div>
+        </div>
+
+        <!-- RECIPIENT -->
+        <div class="recipient-section">
+          <div class="given-to">Diberikan kepada:</div>
+          <div class="recipient-name">Budi Santoso</div>
+        </div>
+
+        <!-- DESCRIPTION -->
+        <div class="desc-text">
+          Atas dedikasi dan pencapaian kompetensi dalam menyelesaikan<br>
+          kurikulum praktik laboratorium IT:
+        </div>
+
+        <div class="course-name">"Administrasi Linux Server Dasar"</div>
+
+        <div class="grade-badge">
+          <div class="dot"></div>
+          <div class="grade-text">Predikat: SANGAT BAIK &nbsp;|&nbsp; Nilai: 95 &nbsp;|&nbsp; Diselesaikan: April 2026
+          </div>
+          <div class="dot"></div>
+        </div>
+
+        <!-- FOOTER -->
+        <div class="footer">
+          <div class="signature">
+            <div class="sig-label">Kutasari, 18 April 2026</div>
+            <div class="sig-space"></div>
+            <div class="sig-line"></div>
+            <div class="sig-name">Drs. Nama Kepala Sekolah, M.Pd.</div>
+            <div class="sig-role">Kepala Sekolah</div>
+          </div>
+
+          <div class="cert-center">
+            <div class="cert-seal"></div>
+            <div class="cert-id-label">Certificate ID</div>
+            <div class="cert-id-val">CERT-XJ9-TKJ-2026-88A9B2</div>
+            <div class="cert-id-label" style="margin-top:2px; color: #16a34a;">✓ VALIDATED</div>
+          </div>
+
+          <div class="signature">
+            <div class="sig-label">Ketua Program Keahlian TKJ</div>
+            <div class="sig-space"></div>
+            <div class="sig-line"></div>
+            <div class="sig-name">Nama Kepala Program, S.Kom.</div>
+            <div class="sig-role">Guru Produktif IT / TKJ</div>
+          </div>
+        </div>
+
       </div>
+
+      <!-- Bottom color bar -->
+      <div class="bottom-bar"></div>
+
     </div>
-
-    <div class="meta">CERT-ID: XJ9-TKJ-2026-88A9B2 • VALIDATED</div>
-
   </div>
 
 </body>
