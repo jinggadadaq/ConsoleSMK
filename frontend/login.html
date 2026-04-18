@@ -57,10 +57,38 @@
       display: flex;
       flex-direction: column;
       justify-content: center;
+      align-items: flex-start;
     }
 
     .logo-container {
-      margin-bottom: 24px;
+      margin-bottom: 32px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .logo-smk {
+      width: 56px;
+      height: 56px;
+      object-fit: contain;
+      filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.12));
+    }
+
+    .logo-text {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .logo-title {
+      font-size: 18px;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+    }
+
+    .logo-subtitle {
+      font-size: 11px;
+      opacity: 0.9;
+      letter-spacing: 1px;
     }
 
     .logo-smk {
@@ -385,6 +413,10 @@
     <div class="left-side">
       <div class="logo-container">
         <img src="assets/LOGO-SMKKU.svg" alt="Logo SMKN 1 Kutasari" class="logo-smk">
+        <div class="logo-text">
+          <div class="logo-title">SMKN 1 KUTASARI</div>
+          <div class="logo-subtitle">LAB CONSOLE</div>
+        </div>
       </div>
 
       <h1 class="login-title">MASUK KE<br><span class="text-primary">LAB KAMU</span></h1>
