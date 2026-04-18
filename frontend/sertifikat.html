@@ -39,7 +39,7 @@
       background: white;
       position: relative;
       box-shadow: 0 20px 50px rgba(0,0,0,0.1);
-      padding: 50px 70px;
+      padding: 50px 70px 80px 70px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -162,20 +162,23 @@
       width: 100%;
       display: flex;
       justify-content: space-between;
-      align-items: flex-end;
-      padding: 0 20px 20px 20px;
+      align-items: flex-start;
+      margin-top: 20px;
       z-index: 20;
     }
 
     .sig-box {
       text-align: center;
-      width: 300px;
+      width: 320px;
     }
 
     .sig-line {
-      border-top: 2px solid var(--text);
-      margin-top: 70px;
+      border-top: 1.5px solid var(--text);
+      margin-top: 55px;
       margin-bottom: 10px;
+      width: 250px;
+      margin-left: auto;
+      margin-right: auto;
     }
 
     .sig-name { font-size: 16px; font-weight: 800; color: var(--text); }
@@ -183,7 +186,7 @@
 
     .cert-meta {
       position: absolute;
-      bottom: 50px;
+      bottom: 40px;
       width: 100%;
       text-align: center;
       font-family: monospace;
