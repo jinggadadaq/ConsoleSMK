@@ -656,8 +656,9 @@
       <!-- SECTION: MY LABS -->
       <section id="my-labs" class="section-container active">
         <div class="card">
-          <div class="card-header">
+          <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
             <h2 class="card-title">Lab Saya</h2>
+            <button class="btn-sm btn-hijau admin-only" style="display:none;" onclick="showToast('Modul Lab', 'Membuka form pembuatan Lab interaktif')">+ Buat Lab Baru</button>
           </div>
           <div class="sub-tabs">
             <button class="sub-tab active">Lab Saya</button>
@@ -716,8 +717,9 @@
       <!-- SECTION: UJIAN -->
       <section id="ujian" class="section-container">
         <div class="card">
-          <div class="card-header">
+          <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
             <h2 class="card-title">Pusat Ujian</h2>
+            <button class="btn-sm btn-hijau admin-only" style="display:none;" onclick="showToast('Modul Ujian', 'Membuka form penjadwalan Ujian Baru')">+ Buat Ujian</button>
           </div>
           <table>
             <thead>
@@ -986,6 +988,7 @@
         roleBadge.textContent = userRole === 'admin' ? 'Admin' : 'Guru / Admin';
         roleBadge.classList.add('admin');
         roleBadge.classList.remove('siswa', 'guru');
+        document.querySelectorAll('.admin-only').forEach(el => el.style.display = 'block');
       } else {
         // Mode Siswa: sembunyikan menu admin
         roleBadge.textContent = 'Siswa';
@@ -995,6 +998,7 @@
         if (adminNavItem) adminNavItem.style.display = 'none';
         if (usersNavItem) usersNavItem.style.display = 'none';
         if (logsNavItem) logsNavItem.style.display = 'none';
+        document.querySelectorAll('.admin-only').forEach(el => el.style.display = 'none');
       }
     });
 
