@@ -98,8 +98,10 @@
       padding: 20px;
       border-bottom: 1px solid var(--border);
       display: flex;
-      align-items: center;
+      align-items: flex-start;
+      justify-content: flex-start;
       gap: 12px;
+      text-align: left;
     }
 
     .sidebar-header img {
@@ -624,26 +626,21 @@
 
     /* Theme Toggle Button */
     .theme-toggle {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      width: 40px;
-      height: 40px;
-      background: white;
-      border: 2px solid #e5e7eb;
+      width: 36px;
+      height: 36px;
+      background: transparent;
+      border: none;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      z-index: 1000;
       transition: all 0.3s ease;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     }
 
     .theme-toggle:hover {
-      transform: scale(1.1);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      background: var(--surface-2);
+      transform: scale(1.05);
     }
 
     .theme-toggle svg {
@@ -676,16 +673,6 @@
 
 <body>
 
-  <!-- Theme Toggle (Optional Feature) -->
-  <button class="theme-toggle" id="themeToggle" title="Ganti mode gelap/terang">
-    <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="color: #16a34a;">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
-    </svg>
-    <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="color: #f59e0b;">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
-    </svg>
-  </button>
-
   <!-- Sidebar -->
   <aside class="sidebar">
     <div class="sidebar-header" style="gap: 12px; padding: 20px 0;">
@@ -694,6 +681,14 @@
         <span class="brand-title" style="font-size: 16px; font-weight: 800; color: var(--text-1);">LAB CONSOLE</span>
         <span class="brand-sub" style="font-size: 10px; color: var(--text-3); font-weight: 600;">SMKN 1 KUTASARI</span>
       </div>
+      <button class="theme-toggle" id="themeToggle" title="Ganti mode gelap/terang" style="margin-left: auto;">
+        <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="color: #16a34a; width: 20px; height: 20px;">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+        </svg>
+        <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="color: #f59e0b; width: 20px; height: 20px;">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+        </svg>
+      </button>
     </div>
 
     <div class="nav-label">MAIN MENU</div>
