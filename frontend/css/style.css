@@ -1,19 +1,32 @@
-/* frontend/css/style.css */
+/* Color System */
 :root {
     --primary: #16a34a;
     --primary-hover: #15803d;
     --accent: #bbf7d0;
-    --bg-start: #ffffff;
-    --bg-end: #f0fdf4;
-    --text-dark: #1f2937;
-    --text-muted: #6b7280;
-    --border-color: #e5e7eb;
+    --bg-start: #f8fafc;
+    --bg-end: #f1f5f9;
+    --surface: #ffffff;
+    --text-dark: #0f172a;
+    --text-muted: #64748b;
+    --border-color: #e2e8f0;
     --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
     --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
     --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
     --radius-xl: 1rem;
     --radius-2xl: 1.5rem;
     --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Dark Mode Overrides */
+.dark-mode {
+    --bg-start: #0f172a;
+    --bg-end: #020617;
+    --surface: #1e293b;
+    --text-dark: #f8fafc;
+    --text-muted: #94a3b8;
+    --border-color: #334155;
+    --accent: rgba(22, 163, 74, 0.2);
+    --shadow-sm: 0 1px 2px 0 rgb(255 255 255 / 0.05);
 }
 
 * {
@@ -66,7 +79,7 @@ body {
     max-width: 1200px;
     height: 85vh;
     min-height: 600px;
-    background: #fff;
+    background: var(--surface);
     border-radius: var(--radius-2xl);
     box-shadow: var(--shadow-lg);
     overflow: hidden;
@@ -153,7 +166,7 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background: #fff;
+    background: var(--surface);
 }
 
 .login-form-container {
@@ -170,7 +183,7 @@ body {
 
 .tabs {
     display: flex;
-    background: #f3f4f6;
+    background: var(--bg-end);
     border-radius: var(--radius-xl);
     padding: 0.5rem;
     margin-bottom: 2rem;
@@ -213,7 +226,8 @@ body {
     border-radius: 0.75rem;
     font-size: 1rem;
     transition: var(--transition);
-    background: #f9fafb;
+    background: var(--bg-end);
+    color: var(--text-dark);
 }
 
 .input-field:focus {
@@ -281,7 +295,7 @@ body {
 
 .sidebar {
     width: 280px;
-    background: #fff;
+    background: var(--surface);
     border-right: 1px solid var(--border-color);
     display: flex;
     flex-direction: column;
@@ -362,7 +376,7 @@ body {
 
 .topbar {
     height: 80px;
-    background: rgba(255, 255, 255, 0.8);
+    background: var(--surface);
     backdrop-filter: blur(10px);
     border-bottom: 1px solid var(--border-color);
     display: flex;
@@ -438,7 +452,7 @@ body {
 }
 
 .card {
-    background: #fff;
+    background: var(--surface);
     padding: 1.5rem;
     border-radius: var(--radius-xl);
     border: 1px solid var(--border-color);

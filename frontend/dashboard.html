@@ -6,6 +6,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dashboard - SMKN 1 Kutasari | Lab Console</title>
   <link rel="icon" href="assets/LOGO-SMKKU.svg" type="image/svg+xml">
+  <script>
+    // Theme Initializer (Prevent FOUC)
+    (function() {
+      const theme = localStorage.getItem('theme') || 'light';
+      if (theme === 'dark') document.documentElement.classList.add('dark-mode');
+    })();
+  </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap"
@@ -602,6 +609,7 @@
       <li class="nav-item"><a class="nav-link" data-target="logs">📊 Log Aktivitas</a></li>
       <li class="nav-item"><a class="nav-link" data-target="users">👥 Users & Kelas</a></li>
       <li class="nav-item"><a class="nav-link" data-target="admin">⚙ Panel Admin</a></li>
+      <li class="nav-item"><a class="nav-link" href="javascript:void(0)" onclick="toggleDarkMode()">🌙 Mode Gelap</a></li>
     </ul>
 
     <div class="sidebar-footer">
@@ -984,8 +992,25 @@
         showToast('Berhasil', 'Instance Lab \'' + title + '\' sedang dibuat di Node-01');
       }, 1500);
     }
+    function toggleDarkMode() {
+      const isDark = document.documentElement.classList.toggle('dark-mode');
+      const theme = isDark ? 'dark' : 'light';
+      localStorage.setItem('theme', theme);
+      updateThemeIcon(isDark);
+      showToast(isDark ? 'Mode Gelap' : 'Mode Terang', 'Tampilan berhasil diperbarui!');
+    }
+
+    function updateThemeIcon(isDark) {
+      const icon = document.getElementById('theme-icon');
+      if(icon) {
+        icon.className = isDark ? 'fas fa-sun' : 'fas fa-moon';
+      }
+    }
+
     // Authentic Role Based UI State
     document.addEventListener("DOMContentLoaded", () => {
+      const isDark = localStorage.getItem('theme') === 'dark';
+      updateThemeIcon(isDark);
       const userRole = localStorage.getItem('userRole') || 'siswa';
       const storageName = localStorage.getItem('userName') || 'Budi Santoso';
       const storageEmail = localStorage.getItem('userEmail') || 'budi@smkn1kutasari.sch.id';
