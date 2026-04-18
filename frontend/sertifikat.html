@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sertifikat Kelulusan - Lab Console SMKN 1 Kutasari</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --primary: #16a34a;
+      --text: #111827;
+      --gray: #4b5563;
+      --border: #e5e7eb;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    body {
+      background-color: #e2e8f0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    /* Ratio A4 Landscape: 297mm x 210mm */
+    .certificate-container {
+      width: 1122px;
+      height: 794px;
+      background: white;
+      position: relative;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+      border: 1px solid #cbd5e1;
+      padding: 40px;
+      overflow: hidden;
+      display: flex;
+    }
+
+    /* Print settings */
+    @media print {
+      body {
+        background: white;
+        padding: 0;
+        margin: 0;
+      }
+      .certificate-container {
+        box-shadow: none;
+        border: none;
+        width: 100%;
+        height: 100vh;
+      }
+      .no-print {
+        display: none !important;
+      }
+    }
+
+    .border-pattern {
+      position: absolute;
+      top: 20px; bottom: 20px; left: 20px; right: 20px;
+      border: 12px solid var(--primary);
+      border-radius: 8px;
+      pointer-events: none;
+      z-index: 10;
+    }
+    
+    .inner-border {
+      position: absolute;
+      top: 36px; bottom: 36px; left: 36px; right: 36px;
+      border: 2px solid #bbf7d0;
+      border-radius: 4px;
+      pointer-events: none;
+      z-index: 10;
+    }
+
+    /* Watermark */
+    .watermark {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 600px;
+      opacity: 0.04;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .cert-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 1;
+      text-align: center;
+      padding: 0 80px;
+    }
+
+    .logos {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+      position: absolute;
+      top: 80px;
+      padding: 0 100px;
+    }
+
+    .logos img {
+      height: 100px;
+      object-fit: contain;
+    }
+
+    h1 {
+      font-size: 56px;
+      font-weight: 800;
+      letter-spacing: 4px;
+      color: var(--primary);
+      margin-top: 80px;
+      text-transform: uppercase;
+    }
+
+    .sub-heading {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--gray);
+      letter-spacing: 6px;
+      margin-bottom: 60px;
+      text-transform: uppercase;
+    }
+
+    .text-normal {
+      font-size: 16px;
+      color: var(--gray);
+      margin-bottom: 24px;
+    }
+
+    .student-name {
+      font-size: 48px;
+      font-weight: 800;
+      color: var(--text);
+      border-bottom: 2px solid #cbd5e1;
+      padding-bottom: 10px;
+      margin-bottom: 24px;
+      width: 80%;
+      display: inline-block;
+    }
+
+    .course-title {
+      font-size: 24px;
+      font-weight: 800;
+      color: var(--primary);
+      margin: 12px 0 32px 0;
+    }
+
+    .score-badge {
+      font-size: 14px;
+      font-weight: 700;
+      padding: 8px 24px;
+      background: #f0fdf4;
+      color: #15803d;
+      border: 1px solid #bbf7d0;
+      border-radius: 999px;
+      display: inline-block;
+    }
+
+    .footer {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+      margin-top: 60px;
+      padding: 0 40px;
+    }
+
+    .signature-box {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .date-text {
+      font-size: 13px;
+      color: var(--gray);
+      margin-bottom: 10px;
+    }
+
+    .signature-line {
+      width: 200px;
+      border-bottom: 1px solid var(--text);
+      margin-top: 60px;
+      margin-bottom: 8px;
+    }
+
+    .signer-name {
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--text);
+    }
+    
+    .signer-title {
+      font-size: 12px;
+      color: var(--gray);
+    }
+
+    .cert-id {
+      position: absolute;
+      bottom: 60px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 10px;
+      color: #9ca3af;
+      font-family: monospace;
+      letter-spacing: 1px;
+    }
+
+    /* Print Button */
+    .print-btn {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background: var(--primary);
+      color: white;
+      padding: 16px 24px;
+      border-radius: 12px;
+      text-decoration: none;
+      font-weight: 700;
+      box-shadow: 0 4px 12px rgba(22,163,74,0.3);
+      cursor: pointer;
+      border: none;
+      font-size: 16px;
+      transition: all 0.2s;
+      z-index: 100;
+    }
+
+    .print-btn:hover {
+      background: #15803d;
+      transform: translateY(-2px);
+    }
+
+    .print-btn:active {
+      transform: translateY(0);
+    }
+  </style>
+</head>
+<body>
+
+  <button class="print-btn no-print" onclick="window.print()">🖨️ Cetak / Simpan PDF</button>
+
+  <div class="certificate-container">
+    <div class="border-pattern"></div>
+    <div class="inner-border"></div>
+
+    <img src="assets/LOGO-TKJ.svg" alt="Watermark TKJ" class="watermark">
+
+    <div class="logos">
+      <img src="assets/LOGO-SMKKU.svg" alt="Logo SMKN 1 Kutasari">
+      <img src="assets/LOGO-TKJ.svg" alt="Logo TKJ">
+    </div>
+
+    <div class="cert-content">
+      <h1>Sertifikat Kelulusan</h1>
+      <div class="sub-heading">IT Lab Console • SMKN 1 Kutasari</div>
+
+      <div class="text-normal">Diberikan dengan hormat kepada:</div>
+      <div class="student-name">Budi Santoso</div>
+      
+      <div class="text-normal">Atas dedikasi dan pencapaiannya dalam menyelesaikan kurikulum praktik laboratorium:</div>
+      <div class="course-title">"Administrasi Linux Server Dasar"</div>
+
+      <div class="score-badge">Predikat: SANGAT BAIK (Nilai: 95)</div>
+
+      <div class="footer">
+        <div class="signature-box">
+          <div class="date-text">Kutasari, 18 April 2026</div>
+          <div class="signature-line"></div>
+          <div class="signer-name">Drs. Nama Kepala Sekolah, M.Pd.</div>
+          <div class="signer-title">Kepala SMKN 1 Kutasari</div>
+        </div>
+        
+        <div class="signature-box">
+          <div class="date-text">Disahkan oleh kompetensi keahlian</div>
+          <div class="signature-line"></div>
+          <div class="signer-name">Kepala Program Studi TKJ</div>
+          <div class="signer-title">Guru Produktif IT</div>
+        </div>
+      </div>
+      
+      <div class="cert-id">CERT-ID: XJ9-TKJ-2026-88A9B2 • VALIDATION TAG: TRUEDATA</div>
+    </div>
+  </div>
+
+</body>
+</html>
