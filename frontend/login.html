@@ -424,8 +424,15 @@
       // Form Submit
       loginForm.addEventListener('submit', (e) => {
         e.preventDefault();
-        // Simulasi login sukses
-        window.location.href = 'dashboard.html';
+        // Simpan role ke localStorage untuk merubah UI Dashboard
+        localStorage.setItem('userRole', currentRole);
+        
+        const btn = document.getElementById('submitBtn');
+        btn.innerHTML = 'Otentikasi...';
+        
+        setTimeout(() => {
+          window.location.href = 'dashboard.html';
+        }, 500);
       });
     });
   </script>

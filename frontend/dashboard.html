@@ -915,15 +915,34 @@
       </section>
       <section id="logs" class="section-container">
         <div class="card">
-          <h2 class="card-title">Log Aktivitas</h2>
-          <p style="margin-top:20px; font-size:14px; color:var(--text-2);">Catatan login dan akses lab.</p>
+          <h2 class="card-title" style="margin-bottom: 20px;">Log Aktivitas Sistem</h2>
+          <table>
+            <thead>
+              <tr><th>Waktu</th><th>User</th><th>Aktivitas</th><th>Status</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Baru saja</td><td>Budi Santoso</td><td>Menyelesaikan Lab Linux Dasar</td><td><span class="status-pill badge-up">Sukses</span></td></tr>
+              <tr><td>1 jam lalu</td><td>Andi Saputra</td><td>Login ke Sistem</td><td><span class="status-pill badge-up">Sukses</span></td></tr>
+              <tr><td>2 jam lalu</td><td>Citra Lestari</td><td>Mulai Ujian Semester</td><td><span class="status-pill badge-uh">Berjalan</span></td></tr>
+              <tr><td>Kemarin</td><td>Admin</td><td>Generate 30 Token Kelas XII TKJ</td><td><span class="status-pill badge-us">System</span></td></tr>
+            </tbody>
+          </table>
         </div>
       </section>
       <section id="users" class="section-container">
         <div class="card">
-          <h2 class="card-title">Users & Kelas</h2>
-          <p style="margin-top:20px; font-size:14px; color:var(--text-2);">Manajemen pengguna dan kelas (Admin/Guru).
-          </p>
+          <div class="card-header"><h2 class="card-title">Manajemen Siswa & Kelas</h2></div>
+          <table>
+            <thead>
+              <tr><th>Nama Siswa</th><th>Kelas</th><th>Email</th><th>Aksi</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Budi Santoso</td><td>XII TKJ 1</td><td>budi@...</td><td><button class="btn-sm btn-outline">Edit</button></td></tr>
+              <tr><td>Andi Saputra</td><td>XII TKJ 1</td><td>andi@...</td><td><button class="btn-sm btn-outline">Edit</button></td></tr>
+              <tr><td>Citra Lestari</td><td>XII TKJ 2</td><td>citra@...</td><td><button class="btn-sm btn-outline">Edit</button></td></tr>
+              <tr><td>Seno Aji</td><td>XI TKJ 1</td><td>seno@...</td><td><button class="btn-sm btn-outline">Edit</button></td></tr>
+            </tbody>
+          </table>
         </div>
       </section>
 
@@ -933,6 +952,32 @@
   <div class="toast-container" id="toastContainer"></div>
 
   <script>
+    // Role based auth (Mock)
+    document.addEventListener("DOMContentLoaded", () => {
+      const userRole = localStorage.getItem('userRole') || 'siswa';
+      const roleBadge = document.querySelector('.role-badge');
+      const userName = document.querySelector('.user-name');
+      const userEmail = document.querySelector('.user-email');
+      const avatar = document.querySelector('.avatar');
+      
+      const adminNavItem = document.querySelector('a[data-target="admin"]')?.parentElement;
+      const usersNavItem = document.querySelector('a[data-target="users"]')?.parentElement;
+      const logsNavItem = document.querySelector('a[data-target="logs"]')?.parentElement;
+
+      if (userRole === 'guru_admin') {
+        roleBadge.textContent = 'Admin / Guru';
+        roleBadge.classList.add('admin');
+        userName.textContent = 'Administrator';
+        userEmail.textContent = 'admin@smkn1kutasari.sch.id';
+        avatar.textContent = 'AD';
+      } else {
+        // Mode Siswa: sembunyikan menu admin
+        if (adminNavItem) adminNavItem.style.display = 'none';
+        if (usersNavItem) usersNavItem.style.display = 'none';
+        if (logsNavItem) logsNavItem.style.display = 'none';
+      }
+    });
+
     // Navigation routing
     const navLinks = document.querySelectorAll('.nav-link');
     const sections = document.querySelectorAll('.section-container');
