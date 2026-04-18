@@ -540,9 +540,15 @@
 
     /* ── PRINT ── */
     @media print {
+      @page {
+        size: A4 landscape;
+        margin: 0;
+      }
+
       body {
         background: white;
         padding: 0;
+        margin: 0;
       }
 
       .print-btn {
@@ -559,102 +565,10 @@
       }
     }
 
-    /* --- DARK MODE (Optional Feature) --- */
-    [data-theme="dark"] {
-      --green-primary: #22c55e;
-      --green-dark: #166534;
-      --green-mid: #15803d;
-      --green-light: #14532d;
-      --green-xlight: #14532d;
-      --green-pale: #0f172a;
-      --surface: #1e293b;
-      --text-1: #f1f5f9;
-      --text-2: #cbd5e1;
-      --text-3: #94a3b8;
-    }
-
-    [data-theme="dark"] body {
-      background: #0f172a;
-    }
-
-    [data-theme="dark"] .cert-wrap {
-      background: #1e293b;
-    }
-
-    [data-theme="dark"] .certificate {
-      background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-    }
-
-    /* Theme Toggle Button */
-    .theme-toggle {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      width: 40px;
-      height: 40px;
-      background: white;
-      border: 2px solid #e5e7eb;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      z-index: 1000;
-      transition: all 0.3s ease;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    }
-
-    .theme-toggle:hover {
-      transform: scale(1.1);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    }
-
-    .theme-toggle svg {
-      width: 20px;
-      height: 20px;
-    }
-
-    .theme-toggle .sun-icon {
-      display: none;
-    }
-
-    .theme-toggle .moon-icon {
-      display: block;
-    }
-
-    [data-theme="dark"] .theme-toggle .sun-icon {
-      display: block;
-    }
-
-    [data-theme="dark"] .theme-toggle .moon-icon {
-      display: none;
-    }
-
-    /* Hide toggle when printing */
-    @media print {
-      .theme-toggle {
-        display: none !important;
-      }
-    }
-
-    /* Smooth transitions */
-    body, .cert-wrap, .certificate {
-      transition: background 0.3s ease;
-    }
   </style>
 </head>
 
 <body>
-
-  <!-- Theme Toggle (Optional Feature) -->
-  <button class="theme-toggle" id="themeToggle" title="Ganti mode gelap/terang">
-    <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="color: #16a34a;">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
-    </svg>
-    <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="color: #f59e0b;">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
-    </svg>
-  </button>
 
   <button class="print-btn" onclick="window.print()">🖨️ Cetak Sertifikat</button>
 
@@ -826,35 +740,6 @@
 
     </div>
   </div>
-
-  <script>
-    // Theme Toggle (Optional Feature)
-    (function() {
-      const themeToggle = document.getElementById('themeToggle');
-      const html = document.documentElement;
-      const STORAGE_KEY = 'lab-console-theme';
-
-      // Load saved theme
-      const savedTheme = localStorage.getItem(STORAGE_KEY);
-      if (savedTheme === 'dark') {
-        html.setAttribute('data-theme', 'dark');
-      }
-
-      // Toggle theme
-      themeToggle.addEventListener('click', () => {
-        const currentTheme = html.getAttribute('data-theme');
-        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-
-        if (newTheme === 'dark') {
-          html.setAttribute('data-theme', 'dark');
-        } else {
-          html.removeAttribute('data-theme');
-        }
-
-        localStorage.setItem(STORAGE_KEY, newTheme);
-      });
-    })();
-  </script>
 
 </body>
 
