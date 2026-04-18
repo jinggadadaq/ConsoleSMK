@@ -13,7 +13,7 @@ Platform manajemen lab IT sekolah berstandar profesional untuk SMKN 1 Kutasari. 
 1. Clone repositori ini:
    ```bash
    git clone <URL_REPO>
-   cd smkn1-lab-console
+   cd ConsoleSMK
    ```
 2. Salin environment vars:
    ```bash
