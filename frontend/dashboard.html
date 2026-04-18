@@ -597,7 +597,7 @@
       <li class="nav-item"><a class="nav-link" data-target="ujian">📋 Pusat Ujian</a></li>
       <li class="nav-item"><a class="nav-link" data-target="jadwal">📅 Jadwal Pelajaran</a></li>
       <li class="nav-item"><a class="nav-link" data-target="leaderboard">🏆 Leaderboard</a></li>
-      <li class="nav-item"><a class="nav-link" data-target="reward">🎁 Reward Latihan</a></li>
+      <li class="nav-item"><a class="nav-link" data-target="reward">🎓 Sertifikat Ujian</a></li>
       <li class="nav-item"><a class="nav-link" data-target="logs">📊 Log Aktivitas</a></li>
       <li class="nav-item"><a class="nav-link" data-target="users">👥 Users & Kelas</a></li>
       <li class="nav-item"><a class="nav-link" data-target="admin">⚙ Panel Admin</a></li>
@@ -886,8 +886,9 @@
                 </optgroup>
               </select>
             </div>
+            <div id="tokenOutput" style="display:none; margin-bottom: 16px; background: var(--primary-xlight); border: 1px dashed var(--primary); padding: 12px; text-align: center; border-radius: 8px; font-family: monospace; font-size: 18px; font-weight: 800; color: var(--primary-hover); letter-spacing: 2px;">XJ9-XXXX-2026</div>
             <button class="btn-sm btn-hijau" style="width: 100%; padding: 12px; font-size: 14px;"
-              onclick="showToast('Token Digenerate', 'XJ9-TKJ-2026 siap disalin')">Generate Token</button>
+              onclick="const t = document.getElementById('tokenOutput'); t.style.display='block'; t.innerText = 'XJ9-' + Math.random().toString(36).substring(2, 6).toUpperCase() + '-2026'; showToast('Berhasil', 'Token berhasil di-generate dan siap dibagikan!')">Generate Token Baru</button>
           </div>
         </div>
       </section>
