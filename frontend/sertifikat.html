@@ -1,285 +1,247 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sertifikat Kelulusan - Lab Console SMKN 1 Kutasari</title>
-  <link rel="icon" href="assets/LOGO-SMKKU.svg" type="image/svg+xml">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
-  
+  <title>Sertifikat Kelulusan - SMKN 1 Kutasari</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap"
+    rel="stylesheet">
+
   <style>
     :root {
       --primary: #16a34a;
-      --text: #0f172a;
+      --dark: #0f172a;
       --gray: #64748b;
-      --border: #16a34a;
     }
 
     * {
-      box-sizing: border-box;
       margin: 0;
       padding: 0;
+      box-sizing: border-box;
       font-family: 'Plus Jakarta Sans', sans-serif;
     }
 
     body {
       background: #f1f5f9;
       display: flex;
-      align-items: center;
       justify-content: center;
+      align-items: center;
       min-height: 100vh;
-      padding: 40px;
     }
 
-    .certificate-container {
+    /* CONTAINER */
+    .certificate {
       width: 1122px;
       height: 794px;
-      background: white;
+      background: #fff;
       position: relative;
-      box-shadow: 0 20px 50px rgba(0,0,0,0.1);
-      padding: 40px 70px 60px 70px;
+      padding: 60px 80px;
       display: flex;
       flex-direction: column;
-      align-items: center;
       justify-content: space-between;
-      overflow: hidden;
     }
 
-    @media print {
-      body { background: white; padding: 0; }
-      .certificate-container { box-shadow: none; border: none; }
-      .no-print { display: none !important; }
-    }
-
+    /* BORDER */
     .border-outer {
       position: absolute;
-      top: 20px; bottom: 20px; left: 20px; right: 20px;
-      border: 8px solid var(--primary);
-      border-radius: 4px;
-      z-index: 10;
-      pointer-events: none;
+      inset: 20px;
+      border: 6px solid var(--primary);
     }
 
     .border-inner {
       position: absolute;
-      top: 35px; bottom: 35px; left: 35px; right: 35px;
+      inset: 35px;
       border: 2px solid #bbf7d0;
-      border-radius: 2px;
-      z-index: 10;
-      pointer-events: none;
     }
 
+    /* WATERMARK */
     .watermark {
       position: absolute;
+      width: 500px;
+      opacity: 0.04;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      width: 700px;
-      opacity: 0.03;
-      z-index: 0;
-      pointer-events: none;
     }
 
-    .header-logos {
-      width: 100%;
+    /* HEADER */
+    .header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      z-index: 20;
+    }
+
+    .header img {
+      height: 80px;
+    }
+
+    /* TITLE */
+    .title {
+      text-align: center;
       margin-top: 10px;
     }
 
-    .header-logos img {
-      height: 90px;
-      width: 90px;
-      object-fit: contain;
-    }
-
-    .main-content {
-      text-align: center;
-      z-index: 20;
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      gap: 15px;
-      width: 100%;
-    }
-
-    h1 {
-      font-size: 44px;
-      font-weight: 800;
+    .title h1 {
+      font-size: 42px;
       color: var(--primary);
-      text-transform: uppercase;
       letter-spacing: 4px;
-      margin-bottom: 0px;
     }
 
-    .sub-heading {
-      font-size: 17px;
-      font-weight: 600;
+    .subtitle {
+      margin-top: 10px;
+      font-size: 16px;
+      letter-spacing: 6px;
       color: var(--gray);
-      letter-spacing: 8px;
-      text-transform: uppercase;
-      margin-bottom: 15px;
     }
 
-    .student-section {
-      margin-bottom: 15px;
+    /* NAME */
+    .name-section {
+      text-align: center;
+      margin: 30px 0;
     }
 
-    .student-name {
-      font-size: 48px;
-      font-weight: 800;
-      color: var(--text);
-      display: inline-block;
-      border-bottom: 3px solid #e2e8f0;
-      padding: 0 40px 6px 40px;
-      margin-top: 5px;
-    }
-
-    .course-title {
-      font-size: 24px;
-      font-weight: 800;
-      color: var(--primary);
-      margin: 10px 0;
-    }
-
-    .score-badge {
-      display: inline-block;
-      padding: 10px 30px;
-      background: #f0fdf4;
-      border: 1px solid #bbf7d0;
-      color: #15803d;
-      border-radius: 999px;
-      font-weight: 700;
+    .name-label {
+      color: var(--gray);
       font-size: 16px;
     }
 
-    .cert-footer {
-      width: 100%;
+    .name {
+      font-size: 44px;
+      font-weight: 800;
+      color: var(--dark);
+      border-bottom: 3px solid #e2e8f0;
+      display: inline-block;
+      padding: 5px 40px;
+      margin-top: 10px;
+    }
+
+    /* CONTENT */
+    .description {
+      text-align: center;
+      max-width: 700px;
+      margin: auto;
+      color: var(--gray);
+      line-height: 1.6;
+    }
+
+    .course {
+      text-align: center;
+      margin-top: 15px;
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    .badge {
+      margin-top: 15px;
+      text-align: center;
+    }
+
+    .badge span {
+      background: #ecfdf5;
+      border: 1px solid #bbf7d0;
+      padding: 10px 30px;
+      border-radius: 999px;
+      font-weight: 700;
+      color: #15803d;
+    }
+
+    /* FOOTER */
+    .footer {
       display: flex;
       justify-content: space-between;
-      align-items: flex-start;
-      margin-top: 10px;
-      z-index: 20;
+      margin-top: 40px;
     }
 
-    .sig-box {
+    .signature {
       text-align: center;
-      width: 320px;
+      width: 280px;
     }
 
-    .sig-line {
-      border-top: 1.5px solid var(--text);
-      margin-top: 45px;
-      margin-bottom: 8px;
-      width: 250px;
-      margin-left: auto;
-      margin-right: auto;
+    .line {
+      border-top: 1px solid #000;
+      margin: 40px 0 8px;
     }
 
-    .sig-name { font-size: 16px; font-weight: 800; color: var(--text); }
-    .sig-title { font-size: 13px; color: var(--gray); }
-
-    .cert-meta {
+    .meta {
       position: absolute;
       bottom: 25px;
       width: 100%;
       text-align: center;
-      font-family: monospace;
       font-size: 11px;
       color: var(--gray);
-      letter-spacing: 1px;
-      z-index: 20;
     }
 
-    /* Print Button */
-    .print-btn {
-      position: fixed;
-      bottom: 30px;
-      right: 30px;
-      background: var(--primary);
-      color: white;
-      padding: 16px 24px;
-      border-radius: 12px;
-      text-decoration: none;
-      font-weight: 700;
-      box-shadow: 0 4px 12px rgba(22,163,74,0.3);
-      cursor: pointer;
-      border: none;
-      font-size: 16px;
-      transition: all 0.2s;
-      z-index: 100;
-    }
-
-    .print-btn:hover {
-      background: #15803d;
-      transform: translateY(-2px);
-    }
-
-    .print-btn:active {
-      transform: translateY(0);
+    /* PRINT */
+    @media print {
+      body {
+        background: white;
+      }
     }
   </style>
 </head>
+
 <body>
 
-  <button class="print-btn no-print" onclick="window.print()">🖨️ Cetak / Simpan PDF</button>
+  <div class="certificate">
 
-  <div class="certificate-container">
     <div class="border-outer"></div>
     <div class="border-inner"></div>
 
-    <img src="assets/LOGO-TKJ.svg" alt="Watermark TKJ" class="watermark">
+    <img src="assets/LOGO-TKJ.svg" class="watermark">
 
-    <!-- Header Logos -->
-    <div class="header-logos">
-      <img src="assets/LOGO-SMKKU.svg" alt="Logo SMKN 1 Kutasari">
-      <img src="assets/LOGO-TKJ.svg" alt="Logo TKJ">
+    <!-- HEADER -->
+    <div class="header">
+      <img src="assets/LOGO-SMKKU.svg">
+      <img src="assets/LOGO-TKJ.svg">
     </div>
 
-    <!-- Main Content -->
-    <div class="main-content">
-      <h1>Sertifikat Kelulusan</h1>
-      <div class="sub-heading">IT Lab Console • SMKN 1 Kutasari</div>
+    <!-- TITLE -->
+    <div class="title">
+      <h1>SERTIFIKAT KELULUSAN</h1>
+      <div class="subtitle">IT LAB CONSOLE • SMKN 1 KUTASARI</div>
+    </div>
 
-      <div style="font-size: 18px; color: var(--gray);">Diberikan dengan hormat kepada:</div>
-      <div class="student-section">
-        <div class="student-name">Budi Santoso</div>
-      </div>
-      
-      <div style="font-size: 16px; color: var(--gray); max-width: 600px; margin: 0 auto;">
-        Atas dedikasi dan pencapaian kompetensi luar biasa dalam menyelesaikan kurikulum praktik laboratorium:
-      </div>
-      <div class="course-title">"Administrasi Linux Server Dasar"</div>
+    <!-- NAME -->
+    <div class="name-section">
+      <div class="name-label">Diberikan kepada:</div>
+      <div class="name">Budi Santoso</div>
+    </div>
 
-      <div>
-        <div class="score-badge">Predikat: SANGAT BAIK (Nilai: 95)</div>
+    <!-- DESCRIPTION -->
+    <div class="description">
+      Atas dedikasi dan pencapaian kompetensi dalam menyelesaikan kurikulum praktik laboratorium:
+    </div>
+
+    <div class="course">"Administrasi Linux Server Dasar"</div>
+
+    <div class="badge">
+      <span>Predikat: SANGAT BAIK (Nilai: 95)</span>
+    </div>
+
+    <!-- FOOTER -->
+    <div class="footer">
+      <div class="signature">
+        <div style="color: var(--gray); font-size: 14px;">Kutasari, 18 April 2026</div>
+        <div class="line"></div>
+        <strong>Drs. Nama Kepala Sekolah, M.Pd.</strong>
+        <div style="color: var(--gray); font-size: 13px;">Kepala Sekolah</div>
+      </div>
+
+      <div class="signature">
+        <div style="color: var(--gray); font-size: 14px;">Ketua Program Keahlian</div>
+        <div class="line"></div>
+        <strong>Kepala Program TKJ</strong>
+        <div style="color: var(--gray); font-size: 13px;">Guru Produktif IT</div>
       </div>
     </div>
 
-    <!-- Footer Signatures -->
-    <div class="cert-footer">
-      <div class="sig-box">
-        <div style="font-size: 14px; color: var(--gray); margin-bottom: 5px;">Kutasari, 18 April 2026</div>
-        <div class="sig-line"></div>
-        <div class="sig-name">Drs. Nama Kepala Sekolah, M.Pd.</div>
-        <div class="sig-title">Kepala SMKN 1 Kutasari</div>
-      </div>
-      
-      <div class="sig-box">
-        <div style="font-size: 14px; color: var(--gray); margin-bottom: 5px;">Disahkan oleh kompetensi keahlian</div>
-        <div class="sig-line"></div>
-        <div class="sig-name">Kepala Program Studi TKJ</div>
-        <div class="sig-title">Guru Produktif IT</div>
-      </div>
-    </div>
-    
-    <div class="cert-meta">CERT-ID: XJ9-TKJ-2026-88A9B2 • VALIDATION TAG: TRUEDATA</div>
+    <div class="meta">CERT-ID: XJ9-TKJ-2026-88A9B2 • VALIDATED</div>
+
   </div>
 
 </body>
+
 </html>
