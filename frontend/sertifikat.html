@@ -11,216 +11,184 @@
   <style>
     :root {
       --primary: #16a34a;
-      --text: #111827;
-      --gray: #4b5563;
-      --border: #e5e7eb;
+      --text: #0f172a;
+      --gray: #64748b;
+      --border: #16a34a;
     }
 
     * {
+      box-sizing: border-box;
       margin: 0;
       padding: 0;
-      box-sizing: border-box;
       font-family: 'Plus Jakarta Sans', sans-serif;
     }
 
     body {
-      background-color: #e2e8f0;
+      background: #f1f5f9;
       display: flex;
-      justify-content: center;
       align-items: center;
+      justify-content: center;
       min-height: 100vh;
-      padding: 20px;
+      padding: 40px;
     }
 
-    /* Ratio A4 Landscape: 297mm x 210mm */
     .certificate-container {
       width: 1122px;
       height: 794px;
       background: white;
       position: relative;
-      box-shadow: 0 10px 40px rgba(0,0,0,0.15);
-      border: 1px solid #cbd5e1;
-      padding: 40px;
-      overflow: hidden;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+      padding: 60px;
       display: flex;
       flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      overflow: hidden;
     }
 
-    /* Print settings */
     @media print {
-      body {
-        background: white;
-        padding: 0;
-        margin: 0;
-      }
-      .certificate-container {
-        box-shadow: none;
-        border: none;
-        width: 100%;
-        height: 100vh;
-      }
-      .no-print {
-        display: none !important;
-      }
+      body { background: white; padding: 0; }
+      .certificate-container { box-shadow: none; border: none; }
+      .no-print { display: none !important; }
     }
 
-    .border-pattern {
+    .border-outer {
       position: absolute;
       top: 20px; bottom: 20px; left: 20px; right: 20px;
-      border: 12px solid var(--primary);
-      border-radius: 8px;
-      pointer-events: none;
-      z-index: 10;
-    }
-    
-    .inner-border {
-      position: absolute;
-      top: 36px; bottom: 36px; left: 36px; right: 36px;
-      border: 2px solid #bbf7d0;
+      border: 8px solid var(--primary);
       border-radius: 4px;
-      pointer-events: none;
       z-index: 10;
+      pointer-events: none;
     }
 
-    /* Watermark */
+    .border-inner {
+      position: absolute;
+      top: 35px; bottom: 35px; left: 35px; right: 35px;
+      border: 2px solid #bbf7d0;
+      border-radius: 2px;
+      z-index: 10;
+      pointer-events: none;
+    }
+
     .watermark {
       position: absolute;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      width: 600px;
-      opacity: 0.04;
-      pointer-events: none;
+      width: 700px;
+      opacity: 0.03;
       z-index: 0;
+      pointer-events: none;
     }
 
-    .cert-content {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      z-index: 1;
-      text-align: center;
-      padding: 0 80px;
-    }
-
-    .logos {
+    .header-logos {
+      width: 100%;
       display: flex;
       justify-content: space-between;
-      width: 100%;
-      padding: 0 40px;
-      margin-top: 40px;
-      margin-bottom: -10px;
-      z-index: 5;
+      align-items: flex-start;
+      z-index: 20;
     }
 
-    .logos img {
-      height: 90px;
-      width: 90px;
+    .header-logos img {
+      height: 100px;
+      width: 100px;
       object-fit: contain;
     }
 
+    .main-content {
+      text-align: center;
+      z-index: 20;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 15px;
+      width: 100%;
+    }
+
     h1 {
-      font-size: 46px;
+      font-size: 52px;
       font-weight: 800;
-      letter-spacing: 4px;
       color: var(--primary);
       text-transform: uppercase;
-      z-index: 10;
+      letter-spacing: 5px;
+      margin-bottom: 5px;
     }
 
     .sub-heading {
       font-size: 18px;
       font-weight: 600;
       color: var(--gray);
-      letter-spacing: 6px;
-      margin-bottom: 30px;
+      letter-spacing: 8px;
       text-transform: uppercase;
+      margin-bottom: 40px;
     }
 
-    .text-normal {
-      font-size: 16px;
-      color: var(--gray);
-      margin-bottom: 24px;
+    .student-section {
+      margin-bottom: 30px;
     }
 
     .student-name {
-      font-size: 48px;
+      font-size: 56px;
       font-weight: 800;
       color: var(--text);
-      border-bottom: 2px solid #cbd5e1;
-      padding-bottom: 10px;
-      margin-bottom: 24px;
-      width: 80%;
       display: inline-block;
+      border-bottom: 3px solid #e2e8f0;
+      padding: 0 40px 10px 40px;
+      margin-top: 10px;
     }
 
     .course-title {
-      font-size: 24px;
+      font-size: 28px;
       font-weight: 800;
       color: var(--primary);
-      margin: 12px 0 32px 0;
+      margin: 15px 0;
     }
 
     .score-badge {
-      font-size: 14px;
-      font-weight: 700;
-      padding: 8px 24px;
-      background: #f0fdf4;
-      color: #15803d;
-      border: 1px solid #bbf7d0;
-      border-radius: 999px;
       display: inline-block;
+      padding: 10px 30px;
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      color: #15803d;
+      border-radius: 999px;
+      font-weight: 700;
+      font-size: 16px;
     }
 
-    .footer {
+    .cert-footer {
+      width: 100%;
       display: flex;
       justify-content: space-between;
-      width: 100%;
-      margin-top: 30px;
-      padding: 0 40px;
+      align-items: flex-end;
+      padding: 0 20px 20px 20px;
+      z-index: 20;
     }
 
-    .signature-box {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+    .sig-box {
+      text-align: center;
+      width: 300px;
     }
 
-    .date-text {
-      font-size: 13px;
-      color: var(--gray);
+    .sig-line {
+      border-top: 2px solid var(--text);
+      margin-top: 70px;
       margin-bottom: 10px;
     }
 
-    .signature-line {
-      width: 200px;
-      border-bottom: 1px solid var(--text);
-      margin-top: 40px;
-      margin-bottom: 8px;
-    }
+    .sig-name { font-size: 16px; font-weight: 800; color: var(--text); }
+    .sig-title { font-size: 13px; color: var(--gray); }
 
-    .signer-name {
-      font-size: 14px;
-      font-weight: 800;
-      color: var(--text);
-    }
-    
-    .signer-title {
-      font-size: 12px;
-      color: var(--gray);
-    }
-
-    .cert-id {
+    .cert-meta {
       position: absolute;
-      bottom: 65px;
-      left: 50%;
-      transform: translateX(-50%);
-      font-size: 10px;
-      color: #9ca3af;
+      bottom: 50px;
+      width: 100%;
+      text-align: center;
       font-family: monospace;
+      font-size: 11px;
+      color: var(--gray);
       letter-spacing: 1px;
+      z-index: 20;
     }
 
     /* Print Button */
@@ -257,46 +225,55 @@
   <button class="print-btn no-print" onclick="window.print()">🖨️ Cetak / Simpan PDF</button>
 
   <div class="certificate-container">
-    <div class="border-pattern"></div>
-    <div class="inner-border"></div>
+    <div class="border-outer"></div>
+    <div class="border-inner"></div>
 
     <img src="assets/LOGO-TKJ.svg" alt="Watermark TKJ" class="watermark">
 
-    <div class="logos">
+    <!-- Header Logos -->
+    <div class="header-logos">
       <img src="assets/LOGO-SMKKU.svg" alt="Logo SMKN 1 Kutasari">
       <img src="assets/LOGO-TKJ.svg" alt="Logo TKJ">
     </div>
 
-    <div class="cert-content">
+    <!-- Main Content -->
+    <div class="main-content">
       <h1>Sertifikat Kelulusan</h1>
       <div class="sub-heading">IT Lab Console • SMKN 1 Kutasari</div>
 
-      <div class="text-normal">Diberikan dengan hormat kepada:</div>
-      <div class="student-name">Budi Santoso</div>
-      
-      <div class="text-normal">Atas dedikasi dan pencapaiannya dalam menyelesaikan kurikulum praktik laboratorium:</div>
-      <div class="course-title">"Administrasi Linux Server Dasar"</div>
-
-      <div class="score-badge">Predikat: SANGAT BAIK (Nilai: 95)</div>
-
-      <div class="footer">
-        <div class="signature-box">
-          <div class="date-text">Kutasari, 18 April 2026</div>
-          <div class="signature-line"></div>
-          <div class="signer-name">Drs. Nama Kepala Sekolah, M.Pd.</div>
-          <div class="signer-title">Kepala SMKN 1 Kutasari</div>
-        </div>
-        
-        <div class="signature-box">
-          <div class="date-text">Disahkan oleh kompetensi keahlian</div>
-          <div class="signature-line"></div>
-          <div class="signer-name">Kepala Program Studi TKJ</div>
-          <div class="signer-title">Guru Produktif IT</div>
-        </div>
+      <div style="font-size: 18px; color: var(--gray);">Diberikan dengan hormat kepada:</div>
+      <div class="student-section">
+        <div class="student-name">Budi Santoso</div>
       </div>
       
-      <div class="cert-id">CERT-ID: XJ9-TKJ-2026-88A9B2 • VALIDATION TAG: TRUEDATA</div>
+      <div style="font-size: 16px; color: var(--gray); max-width: 600px; margin: 0 auto;">
+        Atas dedikasi dan pencapaian kompetensi luar biasa dalam menyelesaikan kurikulum praktik laboratorium:
+      </div>
+      <div class="course-title">"Administrasi Linux Server Dasar"</div>
+
+      <div>
+        <div class="score-badge">Predikat: SANGAT BAIK (Nilai: 95)</div>
+      </div>
     </div>
+
+    <!-- Footer Signatures -->
+    <div class="cert-footer">
+      <div class="sig-box">
+        <div style="font-size: 14px; color: var(--gray); margin-bottom: 5px;">Kutasari, 18 April 2026</div>
+        <div class="sig-line"></div>
+        <div class="sig-name">Drs. Nama Kepala Sekolah, M.Pd.</div>
+        <div class="sig-title">Kepala SMKN 1 Kutasari</div>
+      </div>
+      
+      <div class="sig-box">
+        <div style="font-size: 14px; color: var(--gray); margin-bottom: 5px;">Disahkan oleh kompetensi keahlian</div>
+        <div class="sig-line"></div>
+        <div class="sig-name">Kepala Program Studi TKJ</div>
+        <div class="sig-title">Guru Produktif IT</div>
+      </div>
+    </div>
+    
+    <div class="cert-meta">CERT-ID: XJ9-TKJ-2026-88A9B2 • VALIDATION TAG: TRUEDATA</div>
   </div>
 
 </body>

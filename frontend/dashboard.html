@@ -583,10 +583,11 @@
 
   <!-- Sidebar -->
   <aside class="sidebar">
-    <div class="sidebar-header" style="justify-content: flex-start; gap: 16px; padding: 24px 0 10px 0;">
-      <div style="width: 36px; height: 36px; background: linear-gradient(135deg, #16a34a, #10b981); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: white; font-weight: 900; font-size: 16px; flex-shrink: 0; box-shadow: 0 4px 10px rgba(22,163,74,0.3);">&gt;_</div>
-      <div class="brand-info" style="margin: 0;">
-        <span class="brand-title" style="letter-spacing: 1px; font-size: 17px;">LAB CONSOLE</span>
+    <div class="sidebar-header" style="gap: 12px; padding: 20px 0;">
+      <img src="assets/LOGO-SMKKU.svg" alt="Logo SMKN 1 Kutasari" style="width: 42px; height: 42px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));">
+      <div class="brand-info">
+        <span class="brand-title" style="font-size: 16px; font-weight: 800; color: var(--text-1);">LAB CONSOLE</span>
+        <span class="brand-sub" style="font-size: 10px; color: var(--text-3); font-weight: 600;">SMKN 1 KUTASARI</span>
       </div>
     </div>
 
@@ -657,7 +658,7 @@
         <div class="card">
           <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
             <h2 class="card-title">Katalog Modul Lab</h2>
-            <button class="btn-sm btn-hijau admin-only" style="display:none;" onclick="let lab = prompt('Sebutkan judul modul Lab Server/Jaringan yang ingin dibuat:', 'Modul Routing Mikrotik'); if(lab) showToast('Menyiapkan Server', 'Lingkungan server virtual untuk \'' + lab + '\' berhasil dibuat!')">+ Buat Lab Baru</button>
+            <button class="btn-sm btn-hijau admin-only" style="display:none;" onclick="openCreateLabModal()">+ Buat Lab Baru</button>
           </div>
           <div class="sub-tabs">
             <button class="sub-tab active">Lab Saya</button>
@@ -931,29 +932,57 @@
           </table>
         </div>
       </section>
-      <section id="users" class="section-container">
-        <div class="card">
-          <div class="card-header"><h2 class="card-title">Manajemen Siswa & Kelas</h2></div>
-          <table>
-            <thead>
-              <tr><th>Nama Siswa</th><th>Kelas</th><th>Email</th><th>Aksi</th></tr>
-            </thead>
-            <tbody>
-              <tr><td>Budi Santoso</td><td>XII TKJ 1</td><td>budi@smkn1kutasari.sch.id</td><td><button class="btn-sm btn-outline" onclick="showToast('Edit Siswa', 'Membuka form data: Budi Santoso')">Edit</button> <button class="btn-sm" style="background:#fee2e2; color:#ef4444; border:1px solid #fecaca; margin-left:8px;" onclick="showToast('Hapus Akses', 'Membekukan akses login Budi Santoso')">Blokir</button></td></tr>
-              <tr><td>Andi Saputra</td><td>XII TKJ 1</td><td>andi@smkn1kutasari.sch.id</td><td><button class="btn-sm btn-outline" onclick="showToast('Edit Siswa', 'Membuka form data: Andi Saputra')">Edit</button> <button class="btn-sm" style="background:#fee2e2; color:#ef4444; border:1px solid #fecaca; margin-left:8px;" onclick="showToast('Hapus Akses', 'Membekukan akses login Andi Saputra')">Blokir</button></td></tr>
-              <tr><td>Citra Lestari</td><td>XII TKJ 2</td><td>citra@smkn1kutasari.sch.id</td><td><button class="btn-sm btn-outline" onclick="showToast('Edit Siswa', 'Membuka form data: Citra Lestari')">Edit</button> <button class="btn-sm" style="background:#fee2e2; color:#ef4444; border:1px solid #fecaca; margin-left:8px;" onclick="showToast('Hapus Akses', 'Membekukan akses login Citra Lestari')">Blokir</button></td></tr>
-              <tr><td>Seno Aji</td><td>XI TKJ 1</td><td>seno@smkn1kutasari.sch.id</td><td><button class="btn-sm btn-outline" onclick="showToast('Edit Siswa', 'Membuka form data: Seno Aji')">Edit</button> <button class="btn-sm" style="background:#fee2e2; color:#ef4444; border:1px solid #fecaca; margin-left:8px;" onclick="showToast('Hapus Akses', 'Membekukan akses login Seno Aji')">Blokir</button></td></tr>
-            </tbody>
-          </table>
+  <!-- Modal Buat Lab Baru -->
+  <div id="createLabModal" class="modal-overlay" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:2000; align-items:center; justify-content:center;">
+    <div class="card" style="width: 450px; padding: 32px; animation: fadeInUp 0.3s ease;">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px;">
+        <h2 class="card-title" style="margin:0;">🚀 Buat Lab Proxmox</h2>
+        <button onclick="closeCreateLabModal()" style="background:none; border:none; font-size:24px; cursor:pointer; color:var(--text-3);">&times;</button>
+      </div>
+      <div class="form-fields" style="display:flex; flex-direction:column; gap:20px;">
+        <div class="field-group">
+          <label style="font-size:12px; font-weight:700; color:var(--text-1); margin-bottom:8px; display:block;">JUDUL MODUL PRAKTIK</label>
+          <input type="text" id="labTitle" class="form-input" style="width:100%; padding:12px; border:1.5px solid var(--border); border-radius:10px;" placeholder="Contoh: Administrasi Debian 12">
         </div>
-      </section>
-
+        <div class="field-group">
+          <label style="font-size:12px; font-weight:700; color:var(--text-1); margin-bottom:8px; display:block;">TIPE INSTANCE (PROXMOX)</label>
+          <select id="labType" class="form-input" style="width:100%; padding:12px; border:1.5px solid var(--border); border-radius:10px;">
+            <option value="lxc">Container (LXC) - Ringan</option>
+            <option value="qemu">Virtual Machine (KVM) - Full OS</option>
+          </select>
+        </div>
+        <div class="field-group">
+          <label style="font-size:12px; font-weight:700; color:var(--text-1); margin-bottom:8px; display:block;">OS IMAGE</label>
+          <select id="labOS" class="form-input" style="width:100%; padding:12px; border:1.5px solid var(--border); border-radius:10px;">
+            <option>Debian 12 Bookworm</option>
+            <option>Ubuntu 22.04 LTS</option>
+            <option>Mikrotik CHR 7.x</option>
+            <option>Kali Linux (Tools)</option>
+          </select>
+        </div>
+        <button class="btn-sm btn-hijau" style="width:100%; padding:14px; margin-top:10px;" onclick="submitCreateLab()">Kirim ke Server Proxmox &rarr;</button>
+      </div>
     </div>
-  </main>
+  </div>
 
   <div class="toast-container" id="toastContainer"></div>
 
   <script>
+    function openCreateLabModal() {
+      document.getElementById('createLabModal').style.display = 'flex';
+    }
+    function closeCreateLabModal() {
+      document.getElementById('createLabModal').style.display = 'none';
+    }
+    function submitCreateLab() {
+      const title = document.getElementById('labTitle').value;
+      if(!title) return alert('Harap isi judul lab!');
+      closeCreateLabModal();
+      showToast('Menghubungi Proxmox...', 'Meminta alokasi Resource untuk ' + title);
+      setTimeout(() => {
+        showToast('Berhasil', 'Instance Lab \'' + title + '\' sedang dibuat di Node-01');
+      }, 1500);
+    }
     // Authentic Role Based UI State
     document.addEventListener("DOMContentLoaded", () => {
       const userRole = localStorage.getItem('userRole') || 'siswa';
