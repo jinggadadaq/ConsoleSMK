@@ -1,31 +1,19 @@
-/* Dark Mode Variables */
+/* Color System */
 :root {
     --primary: #16a34a;
     --primary-hover: #15803d;
     --accent: #bbf7d0;
-    --bg-start: #f8fafc;
-    --bg-end: #f1f5f9;
-    --surface: #ffffff;
-    --text-dark: #0f172a;
-    --text-muted: #64748b;
-    --border-color: #e2e8f0;
-    --danger: #ef4444;
+    --bg-start: #ffffff;
+    --bg-end: #f0fdf4;
+    --text-dark: #1f2937;
+    --text-muted: #6b7280;
+    --border-color: #e5e7eb;
     --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
     --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
     --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
     --radius-xl: 1rem;
     --radius-2xl: 1.5rem;
     --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.dark-mode {
-    --bg-start: #0f172a;
-    --bg-end: #020617;
-    --surface: #1e293b;
-    --text-dark: #f1f5f9;
-    --text-muted: #94a3b8;
-    --border-color: #334155;
-    --accent: rgba(22, 163, 74, 0.2);
 }
 
 * {
@@ -36,12 +24,10 @@
 }
 
 body {
-    background: var(--bg-start);
     background: linear-gradient(135deg, var(--bg-start), var(--bg-end));
     color: var(--text-dark);
     min-height: 100vh;
     overflow-x: hidden;
-    transition: background 0.3s, color 0.3s;
 }
 
 .d-block { display: block; }

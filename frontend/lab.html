@@ -4,16 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Terminal Lab - SMKN 1 Kutasari | Lab Console</title>
-  <link rel="icon" href="assets/LOGO-SMKKU.svg" type="image/svg+xml">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=JetBrains+Mono&display=swap" rel="stylesheet">
-  <script>
-    (function() {
-      const theme = localStorage.getItem('theme') || 'light';
-      if (theme === 'dark') document.documentElement.classList.add('dark-mode');
-    })();
-  </script>
   <style>
     :root {
       --primary: #16a34a;
@@ -113,22 +104,6 @@
     
     .term-output { color: #cbd5e1; margin-bottom: 8px; white-space: pre-wrap; }
     .term-output.error { color: #ef4444; }
-
-    /* Dark Mode Overrides for Lab */
-    .dark-mode {
-      --primary-xlight: #020617;
-      --surface: #1e293b;
-      --surface-2: #0f172a;
-      --text-1: #f8fafc;
-      --text-2: #94a3b8;
-      --border: #334155;
-    }
-    .dark-mode .panel-left { background: #0f172a; border-right-color: #334155; }
-    .dark-mode .header-title-row .lab-title { color: #f8fafc; }
-    .dark-mode .step-header { background: #1e293b; color: #f8fafc; }
-    .dark-mode .step-item { border-color: #334155; }
-    .dark-mode .step-content { background: #0f172a; color: #94a3b8; }
-    .dark-mode .timer-box { background: #1e293b; color: #94a3b8; border-color: #334155; }
   </style>
 </head>
 <body>
