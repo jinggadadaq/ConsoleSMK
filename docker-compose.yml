@@ -1,0 +1,45 @@
+version: "3.9"
+services:
+
+  frontend:
+    image: nginx:alpine
+    ports: ["80:80", "443:443"]
+    volumes:
+      - ./frontend:/usr/share/nginx/html:ro
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on: [backend]
+    restart: unless-stopped
+
+  backend:
+    build: ./backend
+    ports: ["8080:8080"]
+    env_file: .env
+    depends_on: [postgres]
+    restart: unless-stopped
+
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_DB: smkn1_lab
+      POSTGRES_USER: smkadmin
+      POSTGRES_PASSWORD: ${DB_PASS}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./db/schema.sql:/docker-entrypoint-initdb.d/schema.sql:ro
+    ports: ["5432:5432"]
+    restart: unless-stopped
+
+  pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@smkn1kutasari.sch.id
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASS}
+    ports: ["5050:80"]
+    depends_on: [postgres]
+
+volumes:
+  postgres_data:
+
+networks:
+  default:
+    name: smkn1-network

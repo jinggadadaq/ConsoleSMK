@@ -1,0 +1,28 @@
+# Environment Variables
+.env
+.env.production
+.env.local
+
+# Compiled output
+backend/server
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Dependencies
+node_modules/
+
+# IDE & Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Docker
+postgres_data/
+
+# OS generated files
+.DS_Store
+Thumbs.db

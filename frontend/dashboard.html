@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - SMKN 1 Kutasari | Lab Console</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #16a34a;
+      --primary-hover: #15803d;
+      --primary-light: #bbf7d0;
+      --primary-xlight: #f0fdf4;
+      --surface: #ffffff;
+      --surface-2: #f9fafb;
+      --text-1: #111827;
+      --text-2: #4b5563;
+      --text-3: #9ca3af;
+      --border: #e5e7eb;
+      --danger: #ef4444;
+      --warning: #f59e0b;
+      --info: #3b82f6;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: "Plus Jakarta Sans", sans-serif; }
+    
+    body { background-color: var(--primary-xlight); color: var(--text-1); overflow-x: hidden; }
+
+    /* Keyframes */
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    @keyframes slideInRight {
+      from { transform: translateX(100%); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+    
+    @keyframes fadeOut {
+      from { opacity: 1; }
+      to { opacity: 0; }
+    }
+
+    /* Container setup */
+    .app-container { display: flex; min-height: 100vh; }
+
+    /* Sidebar */
+    .sidebar {
+      width: 240px;
+      background: var(--surface);
+      border-right: 1px solid var(--border);
+      position: fixed;
+      height: 100vh;
+      overflow-y: auto;
+      z-index: 150;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .sidebar-header {
+      padding: 20px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .sidebar-header img { width: 36px; object-fit: contain; }
+
+    .brand-info { display: flex; flex-direction: column; }
+    .brand-title { font-size: 14px; font-weight: 800; color: var(--text-1); }
+    .brand-sub { font-size: 10px; text-transform: uppercase; color: var(--text-3); letter-spacing: 0.5px; }
+
+    .nav-label {
+      font-size: 10px; text-transform: uppercase; color: var(--text-3);
+      letter-spacing: 1.5px; padding: 20px 20px 10px; font-weight: 700;
+    }
+
+    .nav-menu { list-style: none; flex: 1; }
+    .nav-item { margin-bottom: 4px; }
+    .nav-link {
+      display: flex; align-items: center; gap: 12px; padding: 10px 20px;
+      color: var(--text-2); text-decoration: none; font-size: 13px; font-weight: 600;
+      border-left: 3px solid transparent; transition: all 0.2s ease; cursor: pointer;
+    }
+    .nav-link:hover { transform: translateX(2px); background: var(--surface-2); color: var(--text-1); }
+    .nav-link.active {
+      background: var(--primary-xlight); border-left-color: var(--primary);
+      color: var(--primary-hover); font-weight: 700;
+    }
+    
+    .sidebar-footer { padding: 20px; border-top: 1px solid var(--border); }
+    .logout-btn {
+      display: flex; align-items: center; gap: 10px; width: 100%; border: none; background: transparent;
+      color: var(--danger); font-size: 13px; font-weight: 600; cursor: pointer;
+      padding: 10px; border-radius: 8px; transition: all 0.2s ease;
+    }
+    .logout-btn:hover { background: #fff5f5; }
+
+    /* Main Area */
+    .main-area { margin-left: 240px; flex: 1; min-height: 100vh; position: relative; }
+
+    .bg-watermark {
+      position: fixed; bottom: 20px; right: 20px; width: 200px;
+      opacity: 0.04; pointer-events: none; z-index: 0; object-fit: contain;
+    }
+
+    /* Topbar */
+    .topbar {
+      height: 64px; background: var(--surface); border-bottom: 1px solid var(--border);
+      position: sticky; top: 0; z-index: 100;
+      display: flex; justify-content: space-between; align-items: center; padding: 0 32px;
+    }
+
+    .topbar-left .breadcrumb { font-size: 10px; text-transform: uppercase; color: var(--text-3); font-weight: 700; }
+    .topbar-left .page-title { font-size: 16px; font-weight: 800; color: var(--text-1); }
+
+    .topbar-right { display: flex; align-items: center; gap: 16px; }
+    
+    .role-badge {
+      padding: 4px 10px; border-radius: 999px; font-size: 11px; font-weight: 700;
+      background: #f0fdf4; color: #15803d; /* Siswa default */
+    }
+    
+    .role-badge.guru { background: #eff6ff; color: #1d4ed8; }
+    .role-badge.admin { background: #fff1f2; color: #be123c; }
+
+    .user-profile { text-align: right; }
+    .user-name { font-size: 13px; font-weight: 700; color: var(--text-1); }
+    .user-email { font-size: 11px; color: var(--text-3); }
+
+    .avatar {
+      width: 38px; height: 38px; border-radius: 50%; background: var(--primary);
+      color: white; display: flex; justify-content: center; align-items: center;
+      font-weight: 700; font-size: 14px;
+    }
+
+    /* Content Area */
+    .content { padding: 32px; position: relative; z-index: 1; }
+    
+    .section-container { display: none; animation: fadeInUp 0.4s ease both; }
+    .section-container.active { display: block; }
+
+    /* Welcome Banner */
+    .banner {
+      background: #dcfce7; border: 1px solid var(--primary-light);
+      border-radius: 10px; padding: 16px 20px; font-size: 14px; color: var(--text-1);
+      margin-bottom: 24px; display: flex; align-items: center; gap: 10px;
+    }
+
+    /* Stats Grid */
+    .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 32px; }
+    .stat-card {
+      background: var(--surface); padding: 20px; border-radius: 12px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.08); transition: all 0.2s ease;
+      display: flex; flex-direction: column; gap: 8px;
+    }
+    .stat-card:hover { transform: translateY(-2px); box-shadow: 0 4px 20px rgba(22,163,74,0.15); }
+    .stat-title { font-size: 12px; font-weight: 600; color: var(--text-2); }
+    .stat-value { font-size: 24px; font-weight: 800; color: var(--text-1); }
+    .stat-value.green { color: var(--primary); }
+
+    /* Card & Tables */
+    .card {
+      background: var(--surface); border-radius: 12px; padding: 24px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.08); margin-bottom: 24px;
+    }
+    .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+    .card-title { font-size: 16px; font-weight: 800; color: var(--text-1); }
+    
+    .sub-tabs { display: flex; gap: 8px; margin-bottom: 20px; }
+    .sub-tab {
+      padding: 6px 16px; border-radius: 999px; font-size: 12px; font-weight: 600;
+      cursor: pointer; transition: all 0.2s; background: var(--surface-2); color: var(--text-2); border: none;
+    }
+    .sub-tab.active { background: var(--primary); color: white; }
+
+    table { width: 100%; border-collapse: collapse; }
+    th, td { padding: 14px 16px; text-align: left; font-size: 13px; }
+    th { color: var(--text-3); font-weight: 600; border-bottom: 1px solid var(--border); }
+    td { border-bottom: 1px solid var(--surface-2); color: var(--text-1); }
+    tr:hover td { background: var(--primary-xlight); }
+    
+    .status-pill { padding: 4px 10px; border-radius: 999px; font-size: 11px; font-weight: 700; display: inline-block;}
+    .status-aktif { background: var(--primary-xlight); color: var(--primary-hover); }
+    .status-belum { background: var(--surface-2); color: var(--text-2); }
+    .status-terkunci { background: #fff1f2; color: #be123c; }
+    
+    .badge-uh { background: #eff6ff; color: #1d4ed8; }
+    .badge-up { background: #f0fdf4; color: #15803d; }
+    .badge-us { background: #fff1f2; color: #be123c; }
+
+    .btn-sm {
+      padding: 6px 12px; border-radius: 8px; font-size: 12px; font-weight: 700;
+      border: none; cursor: pointer; transition: all 0.2s; text-decoration: none; display: inline-block;
+    }
+    .btn-hijau { background: var(--primary); color: white; }
+    .btn-hijau:hover { background: var(--primary-hover); box-shadow: 0 4px 12px rgba(22,163,74,0.2); }
+    .btn-outline { background: transparent; border: 1.5px solid var(--border); color: var(--text-2); }
+    .btn-disabled { background: var(--surface-2); color: var(--text-3); cursor: not-allowed; }
+    
+    .medals { font-size: 16px; }
+    .row-highlight td { background: var(--primary-xlight); font-weight: 600; }
+
+    /* Admin Panel classes */
+    .admin-form-group { margin-bottom: 16px; }
+    .admin-form-group label { display: block; font-size: 12px; font-weight: 600; margin-bottom: 6px; }
+    .admin-input { width: 100%; padding: 10px 14px; border: 1.5px solid var(--border); border-radius: 8px; outline: none; transition: border 0.2s; }
+    .admin-input:focus { border-color: var(--primary); }
+
+    /* Toast Notification */
+    .toast-container { position: fixed; bottom: 30px; right: 30px; z-index: 1000; }
+    .toast {
+      background: var(--surface); border-left: 4px solid var(--primary); padding: 16px 24px;
+      border-radius: 8px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); display: flex; align-items: center; gap: 12px;
+      margin-top: 10px; animation: slideInRight 0.3s ease forwards;
+    }
+    .toast.hide { animation: fadeOut 0.3s ease forwards; }
+    .toast-title { font-weight: 700; font-size: 14px; }
+    .toast-msg { font-size: 12px; color: var(--text-2); }
+  </style>
+</head>
+<body>
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <img src="assets/logo-smk.png" alt="Logo SMKN 1 Kutasari">
+      <div class="brand-info">
+        <span class="brand-title">Lab Console</span>
+        <span class="brand-sub">SMKN 1 Kutasari</span>
+      </div>
+    </div>
+    
+    <div class="nav-label">MAIN MENU</div>
+    <ul class="nav-menu">
+      <li class="nav-item"><a class="nav-link active" data-target="my-labs">🖥 My Labs</a></li>
+      <li class="nav-item"><a class="nav-link" data-target="ujian">📋 Pusat Ujian</a></li>
+      <li class="nav-item"><a class="nav-link" data-target="jadwal">📅 Jadwal Pelajaran</a></li>
+      <li class="nav-item"><a class="nav-link" data-target="leaderboard">🏆 Leaderboard</a></li>
+      <li class="nav-item"><a class="nav-link" data-target="reward">🎁 Reward Latihan</a></li>
+      <li class="nav-item"><a class="nav-link" data-target="logs">📊 Log Aktivitas</a></li>
+      <li class="nav-item"><a class="nav-link" data-target="users">👥 Users & Kelas</a></li>
+      <li class="nav-item"><a class="nav-link" data-target="admin">⚙ Panel Admin</a></li>
+    </ul>
+
+    <div class="sidebar-footer">
+      <button class="logout-btn" onclick="window.location.href='login.html'">
+        <span>↩</span> Keluar
+      </button>
+    </div>
+  </aside>
+
+  <!-- Main Area -->
+  <main class="main-area">
+    <img src="assets/logo-tkj.png" class="bg-watermark" alt="Logo TKJ">
+    
+    <header class="topbar">
+      <div class="topbar-left">
+        <div class="breadcrumb">WORKSPACE</div>
+        <div class="page-title">SMK IT-Lab Environment</div>
+      </div>
+      <div class="topbar-right">
+        <span class="role-badge">Siswa</span>
+        <div class="user-profile">
+          <div class="user-name">Budi Santoso</div>
+          <div class="user-email">budi@smkn1kutasari.sch.id</div>
+        </div>
+        <div class="avatar">BS</div>
+      </div>
+    </header>
+
+    <div class="content">
+      <div class="banner">
+        🔔 Selamat datang! Silakan ganti password default Anda untuk keamanan akun.
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card">
+          <span class="stat-title">🖥 Lab Aktif</span>
+          <span class="stat-value green">3</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-title">📋 Ujian Tersedia</span>
+          <span class="stat-value">1</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-title">🎁 Poin Reward</span>
+          <span class="stat-value">450</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-title">✅ Sesi Selesai</span>
+          <span class="stat-value">12</span>
+        </div>
+      </div>
+
+      <!-- SECTION: MY LABS -->
+      <section id="my-labs" class="section-container active">
+        <div class="card">
+          <div class="card-header">
+            <h2 class="card-title">Lab Saya</h2>
+          </div>
+          <div class="sub-tabs">
+            <button class="sub-tab active">Lab Saya</button>
+            <button class="sub-tab">Semua Lab</button>
+            <button class="sub-tab">Riwayat</button>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>Nama Lab</th>
+                <th>Mata Pelajaran</th>
+                <th>Kelas</th>
+                <th>Deadline</th>
+                <th>Status</th>
+                <th>Aksi</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Lab Cisco Packet Tracer #1</td>
+                <td>Jaringan Komputer</td>
+                <td>XII TKJ 1</td>
+                <td>20 Apr 2026</td>
+                <td><span class="status-pill status-aktif">Aktif</span></td>
+                <td><a href="lab.html" class="btn-sm btn-hijau">Buka Lab</a></td>
+              </tr>
+              <tr>
+                <td>Lab Linux Server Dasar</td>
+                <td>Administrasi Server</td>
+                <td>XII TKJ 1</td>
+                <td>22 Apr 2026</td>
+                <td><span class="status-pill status-belum">Belum Mulai</span></td>
+                <td><button class="btn-sm btn-hijau">Mulai Baru</button></td>
+              </tr>
+              <tr>
+                <td>Lab Keamanan Jaringan</td>
+                <td>Cyber Security</td>
+                <td>XII TKJ 1</td>
+                <td>25 Apr 2026</td>
+                <td><span class="status-pill status-terkunci">Terkunci</span></td>
+                <td><button class="btn-sm btn-disabled">Buka Lab</button></td>
+              </tr>
+              <tr>
+                <td>Lab VLAN & Trunking</td>
+                <td>Jaringan Komputer</td>
+                <td>XII TKJ 1</td>
+                <td>Selesai</td>
+                <td><span class="status-pill status-belum">Selesai</span></td>
+                <td><button class="btn-sm btn-outline">Lihat Hasil</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- SECTION: UJIAN -->
+      <section id="ujian" class="section-container">
+        <div class="card">
+          <div class="card-header"><h2 class="card-title">Pusat Ujian</h2></div>
+          <table>
+            <thead>
+              <tr>
+                <th>Nama Ujian</th>
+                <th>Jenis</th>
+                <th>Mata Pelajaran</th>
+                <th>Durasi</th>
+                <th>Status</th>
+                <th>Aksi</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Ulangan Harian — Jaringan Komputer</td>
+                <td><span class="status-pill badge-uh">Ulangan Harian</span></td>
+                <td>Jaringan Komputer</td>
+                <td>45 menit</td>
+                <td>Tersedia</td>
+                <td><button class="btn-sm btn-hijau" onclick="showToast('Memulai ujian...', 'Semoga sukses!')">Mulai Ujian</button></td>
+              </tr>
+              <tr>
+                <td>Ujian Praktik — Konfigurasi Router</td>
+                <td><span class="status-pill badge-up">Ujian Praktik</span></td>
+                <td>Administrasi Server</td>
+                <td>90 menit</td>
+                <td>Tersedia</td>
+                <td><button class="btn-sm btn-hijau">Mulai Ujian</button></td>
+              </tr>
+              <tr>
+                <td>Ujian Semester — Administrasi Server</td>
+                <td><span class="status-pill badge-us">Ujian Semester</span></td>
+                <td>Administrasi Server</td>
+                <td>120 menit</td>
+                <td>Terkunci</td>
+                <td><button class="btn-sm btn-disabled">Belum Dibuka</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- SECTION: JADWAL -->
+      <section id="jadwal" class="section-container">
+        <div class="card">
+          <div class="card-header"><h2 class="card-title">Jadwal Pelajaran</h2></div>
+          <table>
+            <thead>
+              <tr><th>Hari</th><th>Jam</th><th>Mata Pelajaran</th><th>Guru</th><th>Ruang</th></tr>
+            </thead>
+            <tbody>
+              <tr class="row-highlight">
+                <td>Senin</td><td>07:15 - 10:30</td><td>Administrasi Server</td><td>Pak Budi</td><td>Lab TKJ 1</td>
+              </tr>
+              <tr>
+                <td>Selasa</td><td>08:00 - 11:30</td><td>Jaringan Komputer</td><td>Bu Ani</td><td>Lab TKJ 2</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- SECTION: LEADERBOARD -->
+      <section id="leaderboard" class="section-container">
+        <div class="card">
+          <div class="card-header"><h2 class="card-title">Leaderboard Siswa</h2></div>
+          <table>
+            <thead>
+              <tr><th>Peringkat</th><th>Nama Siswa</th><th>Lab Selesai</th><th>Nilai Rata-rata</th><th>Poin</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><span class="medals">🥇</span> 1</td><td>Andi Saputra</td><td>15</td><td>92.5</td><td>1200</td></tr>
+              <tr><td><span class="medals">🥈</span> 2</td><td>Budi Santoso</td><td>12</td><td>89.0</td><td>980</td></tr>
+              <tr><td><span class="medals">🥉</span> 3</td><td>Citra Lestari</td><td>10</td><td>88.5</td><td>850</td></tr>
+              <tr class="row-highlight"><td>14</td><td>Siswa Login Saat Ini</td><td>3</td><td>80.0</td><td>450</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+      
+      <!-- SECTION: Admin Panel -->
+      <section id="admin" class="section-container">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px;">
+          <div class="card">
+            <h2 class="card-title" style="margin-bottom: 20px;">Ganti Password</h2>
+            <div class="admin-form-group">
+              <label>Password Saat Ini</label>
+              <input type="password" class="admin-input" placeholder="••••••••">
+            </div>
+            <div class="admin-form-group">
+              <label>Password Baru</label>
+              <input type="password" class="admin-input" placeholder="••••••••">
+            </div>
+            <button class="btn-sm btn-hijau" style="width: 100%; padding: 12px; font-size: 14px;" onclick="showToast('Berhasil', 'Password telah diubah.')">Simpan Perubahan</button>
+          </div>
+          
+          <div class="card">
+            <h2 class="card-title" style="margin-bottom: 20px;">Generate Token Lab</h2>
+            <div class="admin-form-group">
+              <label>Pilih Kelas</label>
+              <select class="admin-input">
+                <option>XII TKJ 1</option>
+                <option>XII TKJ 2</option>
+              </select>
+            </div>
+            <button class="btn-sm btn-hijau" style="width: 100%; padding: 12px; font-size: 14px;" onclick="showToast('Token Digenerate', 'XJ9-TKJ-2026 siap disalin')">Generate Token</button>
+          </div>
+        </div>
+      </section>
+      
+      <!-- Other sections placeholder to prevent errors -->
+      <section id="reward" class="section-container"><div class="card"><h2 class="card-title">Reward Latihan</h2><p style="margin-top:20px; font-size:14px; color:var(--text-2);">Riwayat perolehan poin Anda.</p></div></section>
+      <section id="logs" class="section-container"><div class="card"><h2 class="card-title">Log Aktivitas</h2><p style="margin-top:20px; font-size:14px; color:var(--text-2);">Catatan login dan akses lab.</p></div></section>
+      <section id="users" class="section-container"><div class="card"><h2 class="card-title">Users & Kelas</h2><p style="margin-top:20px; font-size:14px; color:var(--text-2);">Manajemen pengguna dan kelas (Admin/Guru).</p></div></section>
+
+    </div>
+  </main>
+
+  <div class="toast-container" id="toastContainer"></div>
+
+  <script>
+    // Navigation routing
+    const navLinks = document.querySelectorAll('.nav-link');
+    const sections = document.querySelectorAll('.section-container');
+
+    navLinks.forEach(link => {
+      link.addEventListener('click', (e) => {
+        // Remove active class from all links
+        navLinks.forEach(l => l.classList.remove('active'));
+        // Add active class to clicked link
+        e.currentTarget.classList.add('active');
+
+        // Hide all sections
+        sections.forEach(s => s.classList.remove('active'));
+        
+        // Show target section
+        const targetId = e.currentTarget.getAttribute('data-target');
+        const targetSection = document.getElementById(targetId);
+        if (targetSection) {
+          targetSection.classList.add('active');
+        }
+      });
+    });
+
+    // Toast notification system
+    window.showToast = function(title, message) {
+      const container = document.getElementById('toastContainer');
+      const toast = document.createElement('div');
+      toast.className = 'toast';
+      toast.innerHTML = `
+        <div style="font-size: 20px;">✅</div>
+        <div>
+          <div class="toast-title">${title}</div>
+          <div class="toast-msg">${message}</div>
+        </div>
+      `;
+      
+      container.appendChild(toast);
+      
+      setTimeout(() => {
+        toast.classList.add('hide');
+        setTimeout(() => toast.remove(), 300);
+      }, 2500);
+    }
+  </script>
+</body>
+</html>
