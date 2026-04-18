@@ -98,8 +98,10 @@
       padding: 20px;
       border-bottom: 1px solid var(--border);
       display: flex;
-      align-items: center;
+      align-items: flex-start;
+      justify-content: flex-start;
       gap: 12px;
+      text-align: left;
     }
 
     .sidebar-header img {
@@ -622,6 +624,7 @@
       border-left-color: var(--primary);
     }
 
+
     /* Theme Toggle Sidebar Style */
     .nav-toggle-item {
       cursor: pointer;
@@ -671,10 +674,6 @@
 
 <body>
 
-
-
-  <!-- Sidebar -->
-  <aside class="sidebar">
     <div class="sidebar-header" style="gap: 12px; padding: 20px 0;">
       <img src="assets/LOGO-SMKKU.svg" alt="Logo SMKN 1 Kutasari" style="width: 42px; height: 42px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));">
       <div class="brand-info">
