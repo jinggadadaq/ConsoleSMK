@@ -351,7 +351,7 @@
     <div class="left-content middle-section">
       <div class="heading-1">MASUK KE</div>
       <div class="heading-2">LAB KAMU</div>
-      <p class="description">Tingkatkan kemampuan IT-mu, raih masa depan bersama kami. Akses lab praktik Linux,
+      <p class="description">Tingkatkan kemampuan IT-mu, raih masa depan yang baik. Akses lab praktik Linux,
         Networking, dan Cloud secara terpusat.</p>
       <div class="badge-row">
         <span class="badge">🖥 Realtime Labs</span>
@@ -375,6 +375,11 @@
       <div class="tab-switch">
         <button type="button" class="tab-btn active" id="tab-siswa">Login Siswa</button>
         <button type="button" class="tab-btn" id="tab-guru">Login Guru / Admin</button>
+      </div>
+
+      <div id="errorAlert"
+        style="display: none; background: #fef2f2; border-left: 4px solid var(--danger); padding: 12px; margin-bottom: 20px; border-radius: 6px; font-size: 13px; color: var(--danger); font-weight: 600; animation: fadeInLeft 0.3s ease;">
+        ⚠️ <span id="errorAlertMsg">Email atau password salah!</span>
       </div>
 
       <form class="form-fields" id="loginForm">
@@ -447,7 +452,7 @@
       // Form Submit (Hubungkan ke Database Go-Lang)
       loginForm.addEventListener('submit', async (e) => {
         e.preventDefault();
-        
+
         const btn = document.getElementById('submitBtn');
         const email = document.getElementById('email').value;
         const password = document.getElementById('password').value;
@@ -463,27 +468,35 @@
           const res = await fetch(destUrl, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ 
-              email: email, 
-              password: password, 
-              token_akses: currentRole === 'siswa' ? tokenAkses : '' 
+            body: JSON.stringify({
+              email: email,
+              password: password,
+              token_akses: currentRole === 'siswa' ? tokenAkses : ''
             })
           });
 
           const data = await res.json();
           if (res.ok && data.sukses) {
             localStorage.setItem('userRole', data.data.user.role);
+            localStorage.setItem('userName', data.data.user.name);
+            localStorage.setItem('userEmail', data.data.user.email);
             localStorage.setItem('apiToken', data.data.token);
             window.location.href = 'dashboard.html';
           } else {
-            alert(data.pesan || "Authentikasi gagal");
+            const errBox = document.getElementById('errorAlert');
+            document.getElementById('errorAlertMsg').innerText = data.pesan || "Authentikasi gagal";
+            errBox.style.display = 'block';
+
             btn.innerHTML = 'Masuk ke Lab &rarr;';
             btn.disabled = false;
           }
         } catch (err) {
-            alert("Gagal terhubung ke Database. Pastikan Server Golang/Docker (Port 8080) menyala!");
-            btn.innerHTML = 'Masuk ke Lab &rarr;';
-            btn.disabled = false;
+          const errBox = document.getElementById('errorAlert');
+          document.getElementById('errorAlertMsg').innerText = "Gagal terhubung ke Database Backend!";
+          errBox.style.display = 'block';
+
+          btn.innerHTML = 'Masuk ke Lab &rarr;';
+          btn.disabled = false;
         }
       });
     });

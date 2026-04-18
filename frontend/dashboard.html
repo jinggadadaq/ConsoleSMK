@@ -953,9 +953,12 @@
   <div class="toast-container" id="toastContainer"></div>
 
   <script>
-    // Role based auth (Mock)
+    // Authentic Role Based UI State
     document.addEventListener("DOMContentLoaded", () => {
       const userRole = localStorage.getItem('userRole') || 'siswa';
+      const storageName = localStorage.getItem('userName') || 'Budi Santoso';
+      const storageEmail = localStorage.getItem('userEmail') || 'budi@smkn1kutasari.sch.id';
+      
       const roleBadge = document.querySelector('.role-badge');
       const userName = document.querySelector('.user-name');
       const userEmail = document.querySelector('.user-email');
@@ -965,14 +968,30 @@
       const usersNavItem = document.querySelector('a[data-target="users"]')?.parentElement;
       const logsNavItem = document.querySelector('a[data-target="logs"]')?.parentElement;
 
-      if (userRole === 'guru_admin') {
-        roleBadge.textContent = 'Admin / Guru';
+      // Update basic fields
+      userName.textContent = storageName;
+      userEmail.textContent = storageEmail;
+      
+      // Auto-generate Initials (e.g., "Budi Santoso" -> "BS")
+      const nameParts = storageName.trim().split(' ');
+      let initials = "BS";
+      if (nameParts.length >= 2) {
+         initials = (nameParts[0][0] + nameParts[1][0]).toUpperCase();
+      } else if (nameParts.length === 1 && nameParts[0].length >= 2) {
+         initials = nameParts[0].substring(0, 2).toUpperCase();
+      }
+      avatar.textContent = initials;
+
+      if (userRole === 'admin' || userRole === 'guru' || userRole === 'guru_admin') {
+        roleBadge.textContent = userRole === 'admin' ? 'Admin' : 'Guru / Admin';
         roleBadge.classList.add('admin');
-        userName.textContent = 'Administrator';
-        userEmail.textContent = 'admin@smkn1kutasari.sch.id';
-        avatar.textContent = 'AD';
+        roleBadge.classList.remove('siswa', 'guru');
       } else {
         // Mode Siswa: sembunyikan menu admin
+        roleBadge.textContent = 'Siswa';
+        roleBadge.classList.add('siswa');
+        roleBadge.classList.remove('admin', 'guru');
+        
         if (adminNavItem) adminNavItem.style.display = 'none';
         if (usersNavItem) usersNavItem.style.display = 'none';
         if (logsNavItem) logsNavItem.style.display = 'none';
