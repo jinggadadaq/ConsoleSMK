@@ -622,33 +622,28 @@
       border-left-color: var(--primary);
     }
 
-    /* Theme Toggle Button */
-    .theme-toggle {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      width: 40px;
-      height: 40px;
-      background: white;
-      border: 2px solid #e5e7eb;
-      border-radius: 50%;
+    /* Theme Toggle Sidebar Style */
+    .nav-toggle-item {
+      cursor: pointer;
       display: flex;
       align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      z-index: 1000;
-      transition: all 0.3s ease;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      gap: 12px;
+      padding: 10px 20px;
+      color: var(--text-2);
+      font-size: 13px;
+      font-weight: 600;
+      transition: all 0.2s ease;
+      border-left: 3px solid transparent;
     }
 
-    .theme-toggle:hover {
-      transform: scale(1.1);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    .nav-toggle-item:hover {
+      background: var(--surface-2);
+      color: var(--text-1);
     }
 
     .theme-toggle svg {
-      width: 20px;
-      height: 20px;
+      width: 18px;
+      height: 18px;
     }
 
     .theme-toggle .sun-icon {
@@ -676,15 +671,7 @@
 
 <body>
 
-  <!-- Theme Toggle (Optional Feature) -->
-  <button class="theme-toggle" id="themeToggle" title="Ganti mode gelap/terang">
-    <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="color: #16a34a;">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
-    </svg>
-    <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="color: #f59e0b;">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
-    </svg>
-  </button>
+
 
   <!-- Sidebar -->
   <aside class="sidebar">
@@ -706,6 +693,17 @@
       <li class="nav-item"><a class="nav-link" data-target="logs">📊 Log Aktivitas</a></li>
       <li class="nav-item"><a class="nav-link" data-target="users">👥 Users & Kelas</a></li>
       <li class="nav-item"><a class="nav-link" data-target="admin">⚙ Panel Admin</a></li>
+      <li class="nav-item">
+        <a class="nav-toggle-item theme-toggle" id="themeToggle">
+          <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="color: #16a34a;">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+          </svg>
+          <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="color: #f59e0b;">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+          </svg>
+          <span id="themeText">Mode Gelap</span>
+        </a>
+      </li>
     </ul>
 
     <div class="sidebar-footer">
@@ -1092,12 +1090,19 @@
 
         if (newTheme === 'dark') {
           html.setAttribute('data-theme', 'dark');
+          document.getElementById('themeText').innerText = 'Mode Terang';
         } else {
           html.removeAttribute('data-theme');
+          document.getElementById('themeText').innerText = 'Mode Gelap';
         }
 
         localStorage.setItem(STORAGE_KEY, newTheme);
       });
+
+      // Initial text
+      if (savedTheme === 'dark') {
+        document.getElementById('themeText').innerText = 'Mode Terang';
+      }
     })();
 
     function openCreateLabModal() {
