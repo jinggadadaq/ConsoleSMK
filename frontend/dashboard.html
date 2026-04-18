@@ -583,11 +583,10 @@
 
   <!-- Sidebar -->
   <aside class="sidebar">
-    <div class="sidebar-header">
-      <img src="assets/LOGO-SMKKU.svg" alt="Logo SMKN 1 Kutasari">
-      <div class="brand-info">
-        <span class="brand-title">Lab Console</span>
-        <span class="brand-sub">SMKN 1 Kutasari</span>
+    <div class="sidebar-header" style="justify-content: flex-start; gap: 16px; padding: 24px 0 10px 0;">
+      <div style="width: 36px; height: 36px; background: linear-gradient(135deg, #16a34a, #10b981); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: white; font-weight: 900; font-size: 16px; flex-shrink: 0; box-shadow: 0 4px 10px rgba(22,163,74,0.3);">&gt;_</div>
+      <div class="brand-info" style="margin: 0;">
+        <span class="brand-title" style="letter-spacing: 1px; font-size: 17px;">LAB CONSOLE</span>
       </div>
     </div>
 
@@ -657,8 +656,8 @@
       <section id="my-labs" class="section-container active">
         <div class="card">
           <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
-            <h2 class="card-title">Lab Saya</h2>
-            <button class="btn-sm btn-hijau admin-only" style="display:none;" onclick="showToast('Modul Lab', 'Membuka form pembuatan Lab interaktif')">+ Buat Lab Baru</button>
+            <h2 class="card-title">Katalog Modul Lab</h2>
+            <button class="btn-sm btn-hijau admin-only" style="display:none;" onclick="let lab = prompt('Sebutkan judul modul Lab Server/Jaringan yang ingin dibuat:', 'Modul Routing Mikrotik'); if(lab) showToast('Menyiapkan Server', 'Lingkungan server virtual untuk \'' + lab + '\' berhasil dibuat!')">+ Buat Lab Baru</button>
           </div>
           <div class="sub-tabs">
             <button class="sub-tab active">Lab Saya</button>
@@ -718,8 +717,8 @@
       <section id="ujian" class="section-container">
         <div class="card">
           <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
-            <h2 class="card-title">Pusat Ujian</h2>
-            <button class="btn-sm btn-hijau admin-only" style="display:none;" onclick="showToast('Modul Ujian', 'Membuka form penjadwalan Ujian Baru')">+ Buat Ujian</button>
+            <h2 class="card-title">Pusat Ujian & Evaluasi</h2>
+            <button class="btn-sm btn-hijau admin-only" style="display:none;" onclick="let uj = prompt('Sebutkan judul ujian untuk dibuat:', 'Ujian Akhir Keamanan Siber'); if(uj) showToast('Ujian Aktif', 'Bank soal ujian \'' + uj + '\' telah disebarkan!')">+ Buat Ujian Baru</button>
           </div>
           <table>
             <thead>
