@@ -8,6 +8,26 @@
 
 Platform manajemen lab IT sekolah berstandar profesional untuk SMKN 1 Kutasari. Didesain layaknya SaaS Enterprise, aplikasi ini menyediakan antarmuka bagi siswa dan guru untuk mengatur sesi lab praktikum secara terpusat, lengkap dengan ujian dan monitoring.
 
+## ⚙ Persyaratan Sistem (Backend)
+
+Jika Anda ingin menjalankan atau membangun backend tanpa Docker, Anda memerlukan **Go (Golang) versi 1.22 atau 1.23**.
+
+### Cara Instalasi Go di Linux Server (Ubuntu):
+```bash
+# 1. Download binary Go terbaru
+wget https://go.dev/dl/go1.23.0.linux-amd64.tar.gz
+
+# 2. Hapus versi lama dan ekstrak
+sudo rm -rf /usr/local/go && sudo tar -C /usr/local -xzf go1.23.0.linux-amd64.tar.gz
+
+# 3. Tambahkan ke PATH environment
+echo 'export PATH=$PATH:/usr/local/go/bin' >> ~/.bashrc
+source ~/.bashrc
+
+# 4. Verifikasi instalasi
+go version
+```
+
 ## 🚀 Quick Start
 
 1. Clone repositori ini:
