@@ -8,7 +8,6 @@ import './DashboardLayout.css';
 export default function DashboardLayout() {
   const location = useLocation();
   
-  // Handle Theme Toggle
   const toggleTheme = () => {
     const html = document.documentElement;
     const currentTheme = html.getAttribute('data-theme');

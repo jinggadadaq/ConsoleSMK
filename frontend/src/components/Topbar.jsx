@@ -5,7 +5,6 @@ export default function Topbar({ pageTitle }) {
   const userEmail = localStorage.getItem('userEmail') || 'siswa@smkn1kutasari.sch.id';
   const role = localStorage.getItem('userRole') || 'siswa';
   
-  // Format avatar initials
   const initials = userName.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
 
   return (
@@ -15,7 +14,7 @@ export default function Topbar({ pageTitle }) {
         <div className="page-title">{pageTitle}</div>
       </div>
       <div className="topbar-right">
-        <span className={`role-badge ${role}`}>{role === 'guru_admin' ? 'Guru' : 'Siswa'}</span>
+        <span className={`role-badge`}>{role === 'guru_admin' ? 'Guru' : 'Siswa'}</span>
         <div className="user-profile">
           <div className="user-name">{userName}</div>
           <div className="user-email">{userEmail}</div>
