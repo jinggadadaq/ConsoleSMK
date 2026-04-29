@@ -3,6 +3,7 @@ import { Outlet, useLocation } from 'react-router-dom';
 import Sidebar from '../components/Sidebar';
 import Topbar from '../components/Topbar';
 import logoTkj from '../assets/LOGO-TKJ.svg';
+import './DashboardLayout.css';
 
 export default function DashboardLayout() {
   const location = useLocation();
