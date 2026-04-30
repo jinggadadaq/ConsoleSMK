@@ -64,7 +64,7 @@ export default function Sidebar({ toggleTheme }) {
         </li>
         <li className="nav-item" style={{ marginTop: '20px' }}>
           <div className="nav-link" onClick={toggleTheme} style={{ cursor: 'pointer' }}>
-            <span>🌓</span> <span>Ganti Tema</span>
+            <span>🌓</span>
           </div>
         </li>
       </ul>
