@@ -4,6 +4,7 @@ import './Login.css';
 
 // Gunakan SVG dari assets yang sudah di-copy
 import logoSmk from '../assets/LOGO-SMKKU.svg';
+import logoTkj from '../assets/LOGO-TKJ.svg';
 
 export default function Login() {
   const [role, setRole] = useState('siswa');
@@ -13,7 +14,8 @@ export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  
+  const [isDarkTheme, setIsDarkTheme] = useState(false);
+
   const navigate = useNavigate();
 
   // Handle Theme Toggle
@@ -24,8 +26,10 @@ export default function Login() {
 
     if (newTheme === 'dark') {
       html.setAttribute('data-theme', 'dark');
+      setIsDarkTheme(true);
     } else {
       html.removeAttribute('data-theme');
+      setIsDarkTheme(false);
     }
     localStorage.setItem('lab-console-theme', newTheme);
   };
@@ -34,6 +38,7 @@ export default function Login() {
     const savedTheme = localStorage.getItem('lab-console-theme');
     if (savedTheme === 'dark') {
       document.documentElement.setAttribute('data-theme', 'dark');
+      setIsDarkTheme(true);
     }
   }, []);
 
@@ -61,7 +66,7 @@ export default function Login() {
         localStorage.setItem('userName', data.data.user.name);
         localStorage.setItem('userEmail', data.data.user.email);
         localStorage.setItem('apiToken', data.data.token);
-        
+
         // Redirect to dashboard using React Router
         navigate('/dashboard');
       } else {
@@ -83,54 +88,57 @@ export default function Login() {
       <div className="login-container">
         {/* Left Side */}
         <div className="left-side">
-          <div className="logo-container" style={{ position: 'relative', width: '100%' }}>
-            <img src={logoSmk} alt="Logo SMKN 1 Kutasari" className="logo-smk" />
+          <div className="watermark-bg"></div>
+          <div className="logo-container" style={{ position: 'relative', width: '100%', zIndex: 2 }}>
+            <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+              <img src={logoSmk} alt="Logo SMKN 1 Kutasari" className="logo-smk" />
+              <img src={logoTkj} alt="Logo TKJ" className="logo-tkj" />
+            </div>
             <div className="logo-text">
-              <div className="logo-title">SMKN 1 KUTASARI</div>
-              <div className="logo-subtitle">LAB CONSOLE</div>
+              <div className="logo-title font-outfit">SECURE ACCESS PORTAL</div>
+              <div className="logo-subtitle">SMKN 1 KUTASARI · TKJ</div>
             </div>
             <button className="theme-toggle" onClick={toggleTheme} title="Ganti mode gelap/terang" style={{ position: 'absolute', top: 0, right: 0 }}>
-              <svg className="moon-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" style={{ color: '#bbf7d0', width: 20, height: 20 }}>
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
-              </svg>
-              <svg className="sun-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" style={{ color: '#f59e0b', width: 20, height: 20 }}>
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
-              </svg>
+              {isDarkTheme ? (
+                <svg className="sun-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" style={{ color: '#f59e0b', width: 20, height: 20 }}>
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                </svg>
+              ) : (
+                <svg className="moon-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" style={{ color: '#16a34a', width: 20, height: 20 }}>
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                </svg>
+              )}
             </button>
           </div>
 
-          <h1 className="login-title">MASUK KE<br /><span className="text-primary">LAB KAMU</span></h1>
-          <p className="login-subtitle">Tingkatkan kemampuan IT-mu, raih masa depan yang baik. Akses lab praktik Linux, Networking, dan Cloud secara terpusat.</p>
-
-          <div className="badge-container">
-            <span className="badge">🖥 Realtime Labs</span>
-            <span className="badge">📋 Pusat Ujian</span>
-            <span className="badge">🌐 Monitoring Jaringan</span>
+          <div className="left-content" style={{ zIndex: 2, position: 'relative' }}>
+            <h1 className="login-title font-outfit">SIGN IN TO<br /><span className="text-primary">YOUR JOURNEY</span></h1>
+            <p className="login-subtitle">Setiap langkah belajarmu dimulai dari sini. Tingkatkan skill IT-mu, bangun percaya diri, dan wujudkan masa depan karier yang lebih besar bersama Lab Terpusat.</p>
           </div>
 
-          <div style={{ marginTop: 'auto', fontSize: '0.875rem', opacity: 0.9 }}>
-            <p>&copy; 2026 SMKN 1 Kutasari · TKJ SMKKU</p>
+          <div style={{ marginTop: 'auto', fontSize: '0.8rem', opacity: 0.7, zIndex: 2, position: 'relative', fontWeight: 600 }}>
+            <p>Growing Skills & Creating Opportunities</p>
           </div>
         </div>
 
         {/* Right Side */}
         <div className="right-side">
           <div className="form-header">
-            <h2 className="form-title">SIGN IN</h2>
-            <p style={{ color: 'var(--text-2)' }}>Akses ke lingkungan Lab IT Sekolah</p>
+            <h2 className="form-title font-outfit">SIGN IN</h2>
+            <p style={{ color: 'var(--text-2)', fontSize: '0.9rem' }}>Akses ke lingkungan secure IT-lab.</p>
           </div>
 
           <div className="tabs">
-            <button 
-              type="button" 
-              className={`tab-btn ${role === 'siswa' ? 'active' : ''}`}
+            <button
+              type="button"
+              className={`tab-btn font-outfit ${role === 'siswa' ? 'active' : ''}`}
               onClick={() => setRole('siswa')}
             >
               Login Siswa
             </button>
-            <button 
-              type="button" 
-              className={`tab-btn ${role === 'guru_admin' ? 'active' : ''}`}
+            <button
+              type="button"
+              className={`tab-btn font-outfit ${role === 'guru_admin' ? 'active' : ''}`}
               onClick={() => setRole('guru_admin')}
             >
               Login Guru / Admin
@@ -145,14 +153,14 @@ export default function Login() {
             <div className="input-group">
               <label className="input-label" htmlFor="email">Email / NIS</label>
               <div className="input-wrapper">
-                <input 
-                  type="text" 
-                  id="email" 
-                  className="input-field" 
-                  placeholder="nis@smkn1kutasari.sch.id" 
+                <input
+                  type="text"
+                  id="email"
+                  className="input-field"
+                  placeholder="nis@smkn1kutasari.sch.id"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  required 
+                  required
                 />
               </div>
             </div>
@@ -160,17 +168,17 @@ export default function Login() {
             <div className="input-group">
               <label className="input-label" htmlFor="password">Password</label>
               <div className="input-wrapper">
-                <input 
+                <input
                   type={showPassword ? "text" : "password"}
-                  id="password" 
-                  className="input-field" 
-                  placeholder="••••••••" 
+                  id="password"
+                  className="input-field"
+                  placeholder="••••••••"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  required 
+                  required
                 />
-                <button 
-                  type="button" 
+                <button
+                  type="button"
                   className="eye-toggle"
                   onClick={() => setShowPassword(!showPassword)}
                 >
@@ -182,10 +190,10 @@ export default function Login() {
             <div className={`input-group tokenField ${role === 'guru_admin' ? 'hidden' : ''}`}>
               <label className="input-label" htmlFor="token">Token Akses Lab</label>
               <div className="input-wrapper">
-                <input 
-                  type="text" 
-                  id="token" 
-                  className="input-field" 
+                <input
+                  type="text"
+                  id="token"
+                  className="input-field"
                   placeholder="Token dari guru"
                   value={tokenAkses}
                   onChange={(e) => setTokenAkses(e.target.value)}
@@ -195,12 +203,13 @@ export default function Login() {
 
             <a href="#" className="forgot-password">Lupa password?</a>
 
-            <button type="submit" className="btn-primary" disabled={isLoading}>
-              {isLoading ? 'Otentikasi ke DB...' : 'Masuk ke Lab →'}
+            <button type="submit" className="btn-primary font-outfit" disabled={isLoading}>
+              {isLoading ? 'Authenticating...' : 'Sign In as Client →'}
             </button>
           </form>
 
-          <div style={{ textAlign: 'center', marginTop: '2rem', fontSize: '0.875rem', color: 'var(--text-3)' }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', marginTop: '2rem', fontSize: '0.8rem', color: 'var(--text-3)', fontWeight: 600 }}>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" /></svg>
             Powered by TKJ SMKN 1 Kutasari
           </div>
         </div>

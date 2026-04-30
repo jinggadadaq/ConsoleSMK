@@ -30,6 +30,8 @@ export default function DashboardLayout() {
 
   const getPageTitle = () => {
     if (location.pathname.includes('/dashboard')) return 'TKJ SMKKU - Lab Environment';
+    if (location.pathname.includes('/materi')) return 'Materi Pembelajaran';
+    if (location.pathname.includes('/ujian')) return 'Ulangan Harian';
     if (location.pathname.includes('/lab')) return 'Active Lab Environment';
     if (location.pathname.includes('/sertifikat')) return 'Sertifikat Kompetensi';
     return 'Console SMK';

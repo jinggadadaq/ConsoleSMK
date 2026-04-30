@@ -15,7 +15,7 @@ export default function Sidebar({ toggleTheme }) {
       <div className="sidebar-header">
         <img src={logoSmk} alt="Logo SMKN 1 Kutasari" style={{ width: 40, height: 40 }} />
         <div className="brand-info">
-          <span className="brand-title">LAB CONSOLE</span>
+          <span className="brand-title" style={{ letterSpacing: '1px' }}>LAB CONSOLE</span>
           <span className="brand-sub">SMKN 1 KUTASARI</span>
         </div>
       </div>
@@ -28,8 +28,23 @@ export default function Sidebar({ toggleTheme }) {
           </NavLink>
         </li>
         <li className="nav-item">
+          <NavLink to="/materi" className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}>
+            <span>📚</span> <span>Materi Pembelajaran</span>
+          </NavLink>
+        </li>
+        <li className="nav-item">
           <NavLink to="/ujian" className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}>
-            <span>📋</span> <span>Pusat Ujian</span>
+            <span>📋</span> <span>Ulangan Harian</span>
+          </NavLink>
+        </li>
+        <li className="nav-item">
+          <NavLink to="/jadwal" className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}>
+            <span>📅</span> <span>Jadwal Pelajaran</span>
+          </NavLink>
+        </li>
+        <li className="nav-item">
+          <NavLink to="/monitoring" className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}>
+            <span>🌐</span> <span>Monitoring Jaringan</span>
           </NavLink>
         </li>
         <li className="nav-item">
@@ -38,6 +53,16 @@ export default function Sidebar({ toggleTheme }) {
           </NavLink>
         </li>
         <li className="nav-item">
+          <NavLink to="/data-siswa" className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}>
+            <span>👥</span> <span>Data Siswa & Kelas</span>
+          </NavLink>
+        </li>
+        <li className="nav-item">
+          <NavLink to="/pengaturan" className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}>
+            <span>⚙️</span> <span>Pengaturan</span>
+          </NavLink>
+        </li>
+        <li className="nav-item" style={{ marginTop: '20px' }}>
           <div className="nav-link" onClick={toggleTheme} style={{ cursor: 'pointer' }}>
             <span>🌓</span> <span>Ganti Tema</span>
           </div>
