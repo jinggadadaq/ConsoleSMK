@@ -1,98 +1,175 @@
-# SMKN 1 KUTASARI — LAB CONSOLE
+# SMKN 1 KUTASARI — LAB CONSOLE (Platform Candradimuka)
 
-![Go](https://img.shields.io/badge/Go-1.22-00ADD8?style=flat&logo=go)
+![Go](https://img.shields.io/badge/Go-1.22+-00ADD8?style=flat&logo=go)
+![React](https://img.shields.io/badge/React-18-61DAFB?style=flat&logo=react)
+![Vite](https://img.shields.io/badge/Vite-5-646CFF?style=flat&logo=vite)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-15-4169E1?style=flat&logo=postgresql)
 ![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?style=flat&logo=docker)
-![Nginx](https://img.shields.io/badge/Nginx-Proxy-009639?style=flat&logo=nginx)
+![Vercel](https://img.shields.io/badge/Vercel-Deployable-000000?style=flat&logo=vercel)
 ![License MIT](https://img.shields.io/badge/License-MIT-blue.svg)
 
-Platform manajemen lab IT sekolah berstandar profesional untuk SMKN 1 Kutasari. Didesain layaknya SaaS Enterprise, aplikasi ini menyediakan antarmuka bagi siswa dan guru untuk mengatur sesi lab praktikum secara terpusat, lengkap dengan ujian dan monitoring.
+Platform manajemen lab IT sekolah berstandar profesional untuk **SMKN 1 Kutasari**. Didesain layaknya SaaS Enterprise, aplikasi ini menyediakan antarmuka bagi siswa, guru, dan admin untuk mengatur sesi lab praktikum secara terpusat, materi pembelajaran, ujian online, dan monitoring realtime VM/Router lab.
 
-## ⚙ Persyaratan Sistem (Backend)
+---
 
-Jika Anda ingin menjalankan atau membangun backend tanpa Docker, Anda memerlukan **Go (Golang) versi 1.22 atau 1.23**.
+## ⚡ Quick Start (Pengembangan Lokal)
 
-### Cara Instalasi Go di Linux Server (Ubuntu):
-```bash
-# 1. Download binary Go terbaru
-wget https://go.dev/dl/go1.23.0.linux-amd64.tar.gz
-
-# 2. Hapus versi lama dan ekstrak
-sudo rm -rf /usr/local/go && sudo tar -C /usr/local -xzf go1.23.0.linux-amd64.tar.gz
-
-# 3. Tambahkan ke PATH environment
-echo 'export PATH=$PATH:/usr/local/go/bin' >> ~/.bashrc
-source ~/.bashrc
-
-# 4. Verifikasi instalasi
-go version
-```
-
-## 🚀 Quick Start
-
+### Opsi A: Menggunakan Docker Compose (Direkomendasikan)
 1. Clone repositori ini:
    ```bash
-   git clone <URL_REPO>
+   git clone https://github.com/jinggadadaq/ConsoleSMK.git
    cd ConsoleSMK
    ```
-2. Salin environment vars:
+2. Salin file environment:
    ```bash
    cp .env.example .env
    ```
-3. Sesuaikan isi `.env` dengan kredensial aman (untuk production).
-4. Build dan operasikan secara otomatis melalui Docker Compose:
+3. Jalankan seluruh service (Frontend, Backend, PostgreSQL, PgAdmin):
    ```bash
    docker compose up -d
    ```
-5. Buka platform di browser Anda melalui `http://localhost`.
+4. Buka platform di browser: `http://localhost`
 
-## 👥 Akun Default 
-Data user default telah disertakan untuk uji coba sistem:
-- **Admin**: `admin@smkn1kutasari.sch.id` | Pass: `Admin@123`
-- **Guru**: `guru@smkn1kutasari.sch.id` | Pass: `Guru@123`
-- **Siswa**: `siswa1@smkn1kutasari.sch.id` | Pass: `Siswa@123`
+### Opsi B: Tanpa Docker (Local Manual)
+1. **Database PostgreSQL**: Pastikan PostgreSQL aktif dan eksekusi file `db/schema.sql` untuk membuat tabel & seed data awal.
+2. **Backend (Golang)**:
+   ```bash
+   cd backend
+   go run main.go
+   ```
+   *Backend akan berjalan di `http://localhost:8080`.*
+3. **Frontend (React + Vite)**:
+   ```bash
+   cd frontend
+   npm install
+   npm run dev
+   ```
+   *Frontend akan berjalan di `http://localhost:5173`.*
 
-## 📁 Struktur Direktori
+---
+
+## 👥 Akun Default (Uji Coba Sistem)
+Data user default telah di-seed secara otomatis ke sistem:
+
+| Role | Email / ID | Password | Akses |
+| :--- | :--- | :--- | :--- |
+| **Admin** | `admin@smkn1kutasari.sch.id` | `Admin@123` | Full Admin Console & User Mgmt |
+| **Guru** | `guru@smkn1kutasari.sch.id` | `Guru@123` | Pengelolaan Lab & Upload Materi |
+| **Siswa** | `siswa1@smkn1kutasari.sch.id` | `Siswa@123` | Akses Virtual Lab & Materi |
+
+---
+
+## 🌐 Panduan Deployment
+
+### 1. Deployment di Server VPS / Ubuntu Server Sekolah (Self-Hosted)
+
+Metode ini cocok untuk deployment lokal sekolah (LAN) atau VPS Linux (Debian/Ubuntu).
+
+1. **Persiapan Server**:
+   ```bash
+   sudo apt update && sudo apt install -y docker.io docker-compose git
+   ```
+2. **Clone & Setup Environment**:
+   ```bash
+   git clone https://github.com/jinggadadaq/ConsoleSMK.git
+   cd ConsoleSMK
+   cp .env.example .env
+   chmod 600 .env
+   ```
+3. **Konfigurasi Domain & SSL (Certbot)**:
+   Jika menggunakan domain publik (misal: `lab.smkn1kutasari.sch.id`):
+   ```bash
+   sudo apt install -y certbot python3-certbot-nginx
+   sudo certbot --nginx -d lab.smkn1kutasari.sch.id
+   ```
+4. **Jalankan Container**:
+   ```bash
+   docker compose up -d --build
+   ```
+
+---
+
+### 2. Deployment Cloud Gratisan (Vercel + Railway / Render + Supabase)
+
+Jika ingin memublikasikan aplikasi secara gratis ke cloud internet tanpa server sendiri:
+
+#### Step A: Database PostgreSQL (Supabase / Neon / Railway)
+1. Buat project baru di [Supabase](https://supabase.com) atau [Neon.tech](https://neon.tech).
+2. Dapatkan **Connection String URI** PostgreSQL (contoh: `postgres://user:pass@ep-xyz.supabase.co:5432/postgres`).
+3. Jalankan isi file `db/schema.sql` pada SQL Editor Supabase/Neon untuk menginisialisasi tabel & seed data.
+
+#### Step B: Deploy Backend API (Railway / Render / Fly.io)
+1. Push repositori ini ke GitHub Anda.
+2. Buka [Railway.app](https://railway.app) atau [Render.com](https://render.com).
+3. Buat **New Web Service**, pilih root folder `/backend` (menggunakan `Dockerfile` backend).
+4. Isikan **Environment Variables** pada dashboard Railway/Render:
+   - `DB_HOST`: Host database cloud (misal `ep-xyz.supabase.co`)
+   - `DB_PORT`: `5432`
+   - `DB_USER`: Username database
+   - `DB_PASSWORD`: Password database
+   - `DB_NAME`: `postgres`
+   - `JWT_SECRET`: Untaian karakter rahasia acak
+5. Deploy service. Anda akan mendapatkan URL backend (misal: `https://console-smk-backend.up.railway.app`).
+
+#### Step C: Deploy Frontend di Vercel
+1. Buka [Vercel.com](https://vercel.com) dan hubungkan akun GitHub Anda.
+2. Import repositori **ConsoleSMK**.
+3. Atur konfigurasi project:
+   - **Framework Preset**: `Vite`
+   - **Root Directory**: `frontend`
+4. Tambahkan **Environment Variable** jika diperlukan:
+   - `VITE_API_URL`: `https://console-smk-backend.up.railway.app`
+5. Klik **Deploy**.
+6. File `frontend/vercel.json` secara otomatis telah menangani *Single Page Application (SPA) routing* agar URL seperti `/login` dan `/dashboard` tidak mengalami 404 saat di-refresh.
+
+---
+
+## 📁 Struktur Direktori Proyek
+
 ```
 .
-├── backend/                  # Golang API Service
-│   ├── cmd/main.go
-│   ├── internal/             # Handlers, Models, Middlewares
+├── backend/                  # Golang REST API Service
+│   ├── main.go               # Handlers, JWT, & CORS Router
+│   ├── go.mod / go.sum
 │   └── Dockerfile
-├── frontend/                 # UI Platform 
-│   ├── assets/               # Folder untuk Logo Utama
-│   ├── login.html
-│   ├── dashboard.html
-│   └── lab.html
+├── frontend/                 # UI Platform (React + Vite)
+│   ├── vercel.json           # Konfigurasi SPA rewrite Vercel
+│   ├── src/
+│   │   ├── pages/            # Login, Dashboard, Lab, Materi, Sertifikat
+│   │   ├── components/       # Sidebar, Topbar
+│   │   └── context/          # ThemeContext (Dark/Light Mode)
+│   └── Dockerfile
 ├── db/
-│   └── schema.sql            # PostgreSQL schema
+│   └── schema.sql            # PostgreSQL schema + Seed data
 ├── nginx/
-│   └── nginx.conf            # Reverse proxy setup
-└── docker-compose.yml        # Orchestration layer
+│   └── nginx.conf            # Nginx Reverse Proxy setup
+└── docker-compose.yml        # Multi-container Orchestration
 ```
 
-## 🛠 Panduan Logo / Branding
-Untuk menyesuaikan tampilan, Anda bisa memperbarui aset yang berada di `frontend/assets`:
-- Ganti `logo-smk.png` dengan Logo SMKN 1 Kutasari.
-- Ganti `logo-tkj.png` dengan Logo Jurusan TKJ.
+---
 
-## 📡 API Endpoints Reference
-Aplikasi menggunakan REST API (`/api/` prefix) yang disediakan oleh backend Go:
-- `/api/auth/*` : Otentikasi dan login.
-- `/api/lab/*` : Pengelolaan data Lab (guru/admin) dan daftar lab saya (siswa).
-- `/api/ujian/*` : Mengambil materi ujian, mengirim tugas.
-- `/api/admin/*` : CRUD pengguna & Token akses lab.
+## 📡 Referensi API Endpoints
 
-## 🖥 Deployment pada Ubuntu Server (Sekolah)
-1. Instal Docker & Docker Compose di Server Ubuntu.
-2. Tempatkan kode sumber dan pastikan file bereksistensi `.env` terkunci hak aksesnya (`chmod 600 .env`).
-3. Konfigurasi Domain Utama di DNS Anda menuju IP Publik Server.
-4. Sesuaikan `frontend_url` di environment untuk mendukung CORS jika diperlukan.
-5. Jalankan `docker compose up -d`
+- `POST /api/auth/login` : Login user (mengembalikan token JWT & profil user).
+- `GET  /api/auth/me`    : Mendapatkan profil user aktif (Header `Authorization: Bearer <token>`).
+- `GET  /api/labs`       : Mengambil daftar lab praktikum aktif.
+- `GET  /api/labs/:id`   : Detail environment virtual lab.
+- `GET  /api/materi`     : Katalog materi pembelajaran (filter per kategori `cyber`, `cloud`, `network`).
+- `GET  /api/monitoring` : Status realtime server VM/Router lab.
+- `GET  /api/ujian`      : Daftar ulangan harian & ujian praktik.
+
+---
 
 ## 💬 Troubleshooting
-- **Frontend tidak dapat tersambung API**: Pastikan variabel port sama dengan setup compose port forwarding, dan cross-origin ditangani di gateway Nginx.
-- **Database error / Password Auth**: Cek sinkronisasi PG_PASSWORD di file .env. Pastikan tidak ada karakter khusus yang merusak URI parse jika ada.
+
+- **Frontend tidak dapat terhubung ke Backend API**:
+  - Pastikan backend API aktif dan CORS diizinkan.
+  - Jika menggunakan Vercel, pastikan URL API backend menggunakan protokol `https://`.
+- **Database Connection Error**:
+  - Pastikan host, username, password, dan nama database di `.env` sudah benar.
+  - Untuk PostgreSQL cloud (seperti Supabase/Neon), pastikan SSL mode diizinkan.
+
+---
 
 ## 📜 Lisensi
-MIT License
+Lisensi [MIT](LICENSE) — SMKN 1 Kutasari

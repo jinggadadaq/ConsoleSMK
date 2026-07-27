@@ -3,30 +3,12 @@ import { Outlet, useLocation } from 'react-router-dom';
 import Sidebar from '../components/Sidebar';
 import Topbar from '../components/Topbar';
 import logoTkj from '../assets/LOGO-TKJ.svg';
+import { useTheme } from '../context/ThemeContext';
 import './DashboardLayout.css';
 
 export default function DashboardLayout() {
   const location = useLocation();
-  
-  const toggleTheme = () => {
-    const html = document.documentElement;
-    const currentTheme = html.getAttribute('data-theme');
-    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-
-    if (newTheme === 'dark') {
-      html.setAttribute('data-theme', 'dark');
-    } else {
-      html.removeAttribute('data-theme');
-    }
-    localStorage.setItem('lab-console-theme', newTheme);
-  };
-
-  useEffect(() => {
-    const savedTheme = localStorage.getItem('lab-console-theme');
-    if (savedTheme === 'dark') {
-      document.documentElement.setAttribute('data-theme', 'dark');
-    }
-  }, []);
+  const { toggleTheme } = useTheme();
 
   const getPageTitle = () => {
     if (location.pathname.includes('/dashboard')) return 'TKJ SMKKU - Lab Environment';

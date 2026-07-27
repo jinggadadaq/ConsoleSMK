@@ -1,8 +1,44 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 export default function Dashboard() {
   const navigate = useNavigate();
+  const [labs, setLabs] = useState([
+    { id: '1', title: 'Konfigurasi VLAN & Routing Dasar', class_name: 'XII TKJ 1', duration_minutes: 120, teacher: 'Bapak Budi', status: 'Tersedia' },
+    { id: '2', title: 'Instalasi Linux Debian 11 CLI', class_name: 'XI TKJ 2', duration_minutes: 90, teacher: 'Ibu Rina', status: 'Tersedia' },
+    { id: '3', title: 'Setup Web Server Apache & PHP', class_name: 'XII TKJ 1', duration_minutes: 90, teacher: 'Bapak Budi', status: 'Selesai' }
+  ]);
+  const [monitoring, setMonitoring] = useState([
+    { id: '1', name: 'VM Ubuntu Server 22.04 - Kelompok 1', ip: '192.168.100.15', status: 'Running' },
+    { id: '2', name: 'Router Mikrotik CHR - Lab 2', ip: 'N/A', status: 'Stopped' }
+  ]);
+
+  useEffect(() => {
+    const fetchApiData = async () => {
+      try {
+        const labsUrl = window.location.port !== "" ? 'http://localhost:8080/api/labs' : '/api/labs';
+        const resLabs = await fetch(labsUrl);
+        if (resLabs.ok) {
+          const jsonLabs = await resLabs.json();
+          if (jsonLabs.sukses && jsonLabs.data && jsonLabs.data.length > 0) {
+            setLabs(jsonLabs.data);
+          }
+        }
+
+        const monUrl = window.location.port !== "" ? 'http://localhost:8080/api/monitoring' : '/api/monitoring';
+        const resMon = await fetch(monUrl);
+        if (resMon.ok) {
+          const jsonMon = await resMon.json();
+          if (jsonMon.sukses && jsonMon.data && jsonMon.data.length > 0) {
+            setMonitoring(jsonMon.data);
+          }
+        }
+      } catch (e) {
+        // Fallback to default initial state
+      }
+    };
+    fetchApiData();
+  }, []);
 
   return (
     <>
@@ -47,41 +83,24 @@ export default function Dashboard() {
           </div>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-            {/* Lab Item 1 */}
-            <div style={{ padding: '20px', border: '1px solid var(--border)', borderRadius: '12px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <div>
-                <h4 style={{ fontSize: '14px', fontWeight: '800', color: 'var(--text-1)', marginBottom: '4px' }}>Konfigurasi VLAN & Routing Dasar</h4>
-                <p style={{ fontSize: '11px', color: 'var(--text-3)' }}>Kelas: XII TKJ 1 • Durasi: 120 Menit • Guru: Bapak Budi</p>
+            {labs.map((lab) => (
+              <div key={lab.id} style={{ padding: '20px', border: '1px solid var(--border)', borderRadius: '12px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <div>
+                  <h4 style={{ fontSize: '14px', fontWeight: '800', color: 'var(--text-1)', marginBottom: '4px' }}>{lab.title}</h4>
+                  <p style={{ fontSize: '11px', color: 'var(--text-3)' }}>
+                    Kelas: {lab.class_name || 'XII TKJ 1'} • Durasi: {lab.duration_minutes || 90} Menit • Guru: {lab.teacher || 'Bapak Budi'}
+                  </p>
+                </div>
+                <div style={{ display: 'flex', gap: '8px' }}>
+                  <span className={`status-pill ${lab.status === 'Selesai' ? 'status-belum' : 'status-aktif'}`}>{lab.status || 'Tersedia'}</span>
+                  {lab.status === 'Selesai' ? (
+                    <button className="btn-sm" style={{ background: 'var(--surface-2)', color: 'var(--text-2)' }}>Lihat Hasil</button>
+                  ) : (
+                    <button className="btn-sm btn-hijau" onClick={() => navigate(`/lab/${lab.id}`)}>Buka Lab</button>
+                  )}
+                </div>
               </div>
-              <div style={{ display: 'flex', gap: '8px' }}>
-                <span className="status-pill status-aktif">Tersedia</span>
-                <button className="btn-sm btn-hijau" onClick={() => navigate('/lab/1')}>Buka Lab</button>
-              </div>
-            </div>
-
-            {/* Lab Item 2 */}
-            <div style={{ padding: '20px', border: '1px solid var(--border)', borderRadius: '12px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <div>
-                <h4 style={{ fontSize: '14px', fontWeight: '800', color: 'var(--text-1)', marginBottom: '4px' }}>Instalasi Linux Debian 11 CLI</h4>
-                <p style={{ fontSize: '11px', color: 'var(--text-3)' }}>Kelas: XI TKJ 2 • Durasi: 90 Menit • Guru: Ibu Rina</p>
-              </div>
-              <div style={{ display: 'flex', gap: '8px' }}>
-                <span className="status-pill status-aktif">Tersedia</span>
-                <button className="btn-sm btn-hijau" onClick={() => navigate('/lab/2')}>Buka Lab</button>
-              </div>
-            </div>
-
-            {/* Lab Item 3 */}
-            <div style={{ padding: '20px', border: '1px solid var(--border)', borderRadius: '12px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <div>
-                <h4 style={{ fontSize: '14px', fontWeight: '800', color: 'var(--text-1)', marginBottom: '4px' }}>Setup Web Server Apache & PHP</h4>
-                <p style={{ fontSize: '11px', color: 'var(--text-3)' }}>Kelas: XII TKJ 1 • Durasi: 90 Menit • Guru: Bapak Budi</p>
-              </div>
-              <div style={{ display: 'flex', gap: '8px' }}>
-                <span className="status-pill status-belum">Selesai</span>
-                <button className="btn-sm" style={{ background: 'var(--surface-2)', color: 'var(--text-2)' }}>Lihat Hasil</button>
-              </div>
-            </div>
+            ))}
           </div>
         </div>
       </div>
@@ -91,21 +110,21 @@ export default function Dashboard() {
         <h3 style={{ fontSize: '14px', fontWeight: '800', color: 'var(--primary-hover)', marginBottom: '16px' }}>Status Lab Anda (Realtime)</h3>
         
         <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-          <div style={{ padding: '16px', background: 'rgba(255,255,255,0.5)', borderRadius: '8px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <div>
-              <div style={{ fontSize: '13px', fontWeight: '700', color: 'var(--text-1)' }}>VM Ubuntu Server 22.04 - Kelompok 1</div>
-              <div style={{ fontSize: '11px', color: 'var(--text-3)' }}>Status: Running • IP: 192.168.100.15</div>
+          {monitoring.map((item) => (
+            <div key={item.id} style={{ padding: '16px', background: 'rgba(255,255,255,0.5)', borderRadius: '8px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <div>
+                <div style={{ fontSize: '13px', fontWeight: '700', color: 'var(--text-1)' }}>{item.name}</div>
+                <div style={{ fontSize: '11px', color: 'var(--text-3)' }}>Status: {item.status} • IP: {item.ip}</div>
+              </div>
+              <span style={{
+                width: '12px',
+                height: '12px',
+                borderRadius: '50%',
+                background: item.status === 'Running' ? 'var(--primary)' : 'var(--text-3)',
+                boxShadow: item.status === 'Running' ? '0 0 8px var(--primary)' : 'none'
+              }}></span>
             </div>
-            <span style={{ width: '12px', height: '12px', borderRadius: '50%', background: 'var(--primary)', boxShadow: '0 0 8px var(--primary)' }}></span>
-          </div>
-          
-          <div style={{ padding: '16px', background: 'rgba(255,255,255,0.5)', borderRadius: '8px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <div>
-              <div style={{ fontSize: '13px', fontWeight: '700', color: 'var(--text-1)' }}>Router Mikrotik CHR - Lab 2</div>
-              <div style={{ fontSize: '11px', color: 'var(--text-3)' }}>Status: Stopped • IP: N/A</div>
-            </div>
-            <span style={{ width: '12px', height: '12px', borderRadius: '50%', background: 'var(--text-3)' }}></span>
-          </div>
+          ))}
         </div>
       </div>
     </>

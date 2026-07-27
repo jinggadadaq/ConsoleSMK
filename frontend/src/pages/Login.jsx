@@ -1,10 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
+import { useTheme } from '../context/ThemeContext';
 import './Login.css';
-
-// Gunakan SVG dari assets yang sudah di-copy
-import logoSmk from '../assets/LOGO-SMKKU.svg';
-import logoTkj from '../assets/LOGO-TKJ.svg';
 
 export default function Login() {
   const [role, setRole] = useState('siswa');
@@ -14,33 +11,9 @@ export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [isDarkTheme, setIsDarkTheme] = useState(false);
 
+  const { isDark, toggleTheme } = useTheme();
   const navigate = useNavigate();
-
-  // Handle Theme Toggle
-  const toggleTheme = () => {
-    const html = document.documentElement;
-    const currentTheme = html.getAttribute('data-theme');
-    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-
-    if (newTheme === 'dark') {
-      html.setAttribute('data-theme', 'dark');
-      setIsDarkTheme(true);
-    } else {
-      html.removeAttribute('data-theme');
-      setIsDarkTheme(false);
-    }
-    localStorage.setItem('lab-console-theme', newTheme);
-  };
-
-  useEffect(() => {
-    const savedTheme = localStorage.getItem('lab-console-theme');
-    if (savedTheme === 'dark') {
-      document.documentElement.setAttribute('data-theme', 'dark');
-      setIsDarkTheme(true);
-    }
-  }, []);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -66,151 +39,192 @@ export default function Login() {
         localStorage.setItem('userName', data.data.user.name);
         localStorage.setItem('userEmail', data.data.user.email);
         localStorage.setItem('apiToken', data.data.token);
-
-        // Redirect to dashboard using React Router
         navigate('/dashboard');
       } else {
         setErrorMsg(data.pesan || "Autentikasi gagal");
       }
     } catch (err) {
-      setErrorMsg("Gagal terhubung ke Database Backend!");
-      // Simulate login for frontend demo if backend is offline
-      setTimeout(() => {
-        navigate('/dashboard');
-      }, 1000);
+      setErrorMsg("Gagal terhubung ke server. Melanjutkan demo...");
+      setTimeout(() => navigate('/dashboard'), 1200);
     } finally {
       setIsLoading(false);
     }
   };
 
+  const floatingCards = [
+    { icon: '🖥️', label: 'Virtual Lab', style: { top: '22%', left: '12%' } },
+    { icon: '💻', label: 'SSH Terminal', style: { top: '18%', left: '50%' } },
+    { icon: '🌐', label: 'Networking', style: { top: '42%', left: '55%' } },
+    { icon: '🛡️', label: 'Security', style: { top: '60%', left: '30%' } },
+    { icon: '⚙️', label: 'Server Mgmt', style: { top: '48%', left: '8%' } },
+  ];
+
   return (
-    <div className="login-page-wrapper">
-      <div className="login-container">
-        {/* Left Side */}
-        <div className="left-side">
-          <div className="watermark-bg"></div>
-          <div className="logo-container" style={{ position: 'relative', width: '100%', zIndex: 2 }}>
-            <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
-              <img src={logoSmk} alt="Logo SMKN 1 Kutasari" className="logo-smk" />
-              <img src={logoTkj} alt="Logo TKJ" className="logo-tkj" />
-            </div>
-            <div className="logo-text">
-              <div className="logo-title font-outfit">SECURE ACCESS PORTAL</div>
-              <div className="logo-subtitle">SMKN 1 KUTASARI · TKJ</div>
-            </div>
-            <button className="theme-toggle" onClick={toggleTheme} title="Ganti mode gelap/terang" style={{ position: 'absolute', top: 0, right: 0 }}>
-              {isDarkTheme ? (
-                <svg className="sun-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" style={{ color: '#f59e0b', width: 20, height: 20 }}>
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
-                </svg>
-              ) : (
-                <svg className="moon-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" style={{ color: '#16a34a', width: 20, height: 20 }}>
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
-                </svg>
-              )}
-            </button>
-          </div>
+    <div className="login-v2-wrapper">
+      {/* Back to home link */}
+      <Link to="/" className="login-back-link">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+        Kembali ke Beranda
+      </Link>
 
-          <div className="left-content" style={{ zIndex: 2, position: 'relative' }}>
-            <h1 className="login-title font-outfit">SIGN IN TO<br /><span className="text-primary">YOUR JOURNEY</span></h1>
-            <p className="login-subtitle">Setiap langkah belajarmu dimulai dari sini. Tingkatkan skill IT-mu, bangun percaya diri, dan wujudkan masa depan karier yang lebih besar bersama Lab Terpusat.</p>
-          </div>
+      {/* Theme toggle */}
+      <button className="login-theme-btn" onClick={toggleTheme} title={isDark ? 'Mode Terang' : 'Mode Gelap'}>
+        {isDark ? (
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>
+          </svg>
+        ) : (
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>
+          </svg>
+        )}
+      </button>
 
-          <div style={{ marginTop: 'auto', fontSize: '0.8rem', opacity: 0.7, zIndex: 2, position: 'relative', fontWeight: 600 }}>
-            <p>Growing Skills & Creating Opportunities</p>
+      {/* Left Panel */}
+      <div className="login-left-panel">
+        {/* Floating Feature Cards */}
+        {floatingCards.map((card, i) => (
+          <div key={i} className="floating-card" style={card.style}>
+            <span className="floating-card-icon">{card.icon}</span>
+            <span className="floating-card-label">{card.label}</span>
           </div>
+        ))}
+
+        {/* Center logo */}
+        <div className="login-center-logo">
+          <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/>
+          </svg>
         </div>
 
-        {/* Right Side */}
-        <div className="right-side">
-          <div className="form-header">
-            <h2 className="form-title font-outfit">SIGN IN</h2>
-            <p style={{ color: 'var(--text-2)', fontSize: '0.9rem' }}>Akses ke lingkungan secure IT-lab.</p>
+        {/* Branding text at bottom */}
+        <div className="login-left-branding">
+          <h2>Welcome to <span className="branding-highlight">Candradimuka</span></h2>
+          <p>Platform penempa kesatria IT dari bangku SMK. Lab nyata, skill nyata, masa depan nyata.</p>
+        </div>
+      </div>
+
+      {/* Right Panel — Form Card */}
+      <div className="login-right-panel">
+        <div className="login-card">
+          {/* Card Header */}
+          <div className="login-card-header">
+            <div className="login-card-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+              </svg>
+            </div>
+            <div>
+              <h1 className="login-card-title">Sign In</h1>
+              <p className="login-card-subtitle">Akses console dashboard kamu</p>
+            </div>
           </div>
 
-          <div className="tabs">
+          {/* Role tabs */}
+          <div className="login-tabs">
             <button
               type="button"
-              className={`tab-btn font-outfit ${role === 'siswa' ? 'active' : ''}`}
+              className={`login-tab ${role === 'siswa' ? 'active' : ''}`}
               onClick={() => setRole('siswa')}
             >
-              Login Siswa
+              Siswa
             </button>
             <button
               type="button"
-              className={`tab-btn font-outfit ${role === 'guru_admin' ? 'active' : ''}`}
+              className={`login-tab ${role === 'guru_admin' ? 'active' : ''}`}
               onClick={() => setRole('guru_admin')}
             >
-              Login Guru / Admin
+              Guru / Admin
             </button>
           </div>
 
-          <div className={`errorAlert ${errorMsg ? 'show' : ''}`}>
-            ⚠️ <span>{errorMsg}</span>
-          </div>
+          {/* Error Alert */}
+          {errorMsg && (
+            <div className="login-error-alert">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+              {errorMsg}
+            </div>
+          )}
 
-          <form onSubmit={handleLogin} style={{ width: '100%', maxWidth: 400 }}>
-            <div className="input-group">
-              <label className="input-label" htmlFor="email">Email / NIS</label>
-              <div className="input-wrapper">
-                <input
-                  type="text"
-                  id="email"
-                  className="input-field"
-                  placeholder="nis@smkn1kutasari.sch.id"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                />
-              </div>
+          {/* Form */}
+          <form onSubmit={handleLogin} className="login-form">
+            <div className="login-field">
+              <label htmlFor="login-email">Email / NIS</label>
+              <input
+                type="text"
+                id="login-email"
+                placeholder="nis@smkn1kutasari.sch.id"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                autoComplete="username"
+              />
             </div>
 
-            <div className="input-group">
-              <label className="input-label" htmlFor="password">Password</label>
-              <div className="input-wrapper">
+            <div className="login-field">
+              <div className="login-field-header">
+                <label htmlFor="login-password">Password</label>
+                <a href="#" className="login-forgot">Lupa password?</a>
+              </div>
+              <div className="login-field-wrapper">
                 <input
                   type={showPassword ? "text" : "password"}
-                  id="password"
-                  className="input-field"
+                  id="login-password"
                   placeholder="••••••••"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
+                  autoComplete="current-password"
                 />
                 <button
                   type="button"
-                  className="eye-toggle"
+                  className="login-eye"
                   onClick={() => setShowPassword(!showPassword)}
+                  aria-label={showPassword ? "Sembunyikan password" : "Tampilkan password"}
+                  title={showPassword ? "Sembunyikan password" : "Tampilkan password"}
                 >
-                  {showPassword ? '🙈' : '👁'}
+                  {showPassword ? (
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                      <circle cx="12" cy="12" r="3" fill="currentColor" />
+                      <line x1="3" y1="21" x2="21" y2="3" stroke="currentColor" strokeWidth="2.5" />
+                    </svg>
+                  ) : (
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                      <circle cx="12" cy="12" r="3" fill="currentColor" />
+                    </svg>
+                  )}
                 </button>
               </div>
             </div>
 
-            <div className={`input-group tokenField ${role === 'guru_admin' ? 'hidden' : ''}`}>
-              <label className="input-label" htmlFor="token">Token Akses Lab</label>
-              <div className="input-wrapper">
+            {role === 'siswa' && (
+              <div className="login-field">
+                <label htmlFor="login-token">Token Akses Lab</label>
                 <input
                   type="text"
-                  id="token"
-                  className="input-field"
+                  id="login-token"
                   placeholder="Token dari guru"
                   value={tokenAkses}
                   onChange={(e) => setTokenAkses(e.target.value)}
                 />
               </div>
-            </div>
+            )}
 
-            <a href="#" className="forgot-password">Lupa password?</a>
-
-            <button type="submit" className="btn-primary font-outfit" disabled={isLoading}>
-              {isLoading ? 'Authenticating...' : 'Sign In as Client →'}
+            <button type="submit" className="login-submit-btn" disabled={isLoading} id="login-submit">
+              {isLoading ? (
+                <><span className="login-spinner"></span>Authenticating...</>
+              ) : (
+                <>Masuk <span>→</span></>
+              )}
             </button>
           </form>
 
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', marginTop: '2rem', fontSize: '0.8rem', color: 'var(--text-3)', fontWeight: 600 }}>
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" /></svg>
-            Powered by TKJ SMKN 1 Kutasari
+          {/* Footer */}
+          <div className="login-card-footer">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            Encrypted · Platform Candradimuka SMK
           </div>
         </div>
       </div>

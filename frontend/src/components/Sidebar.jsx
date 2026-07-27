@@ -1,8 +1,10 @@
 import React from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
+import { useTheme } from '../context/ThemeContext';
 import logoSmk from '../assets/LOGO-SMKKU.svg';
 
 export default function Sidebar({ toggleTheme }) {
+  const { isDark } = useTheme();
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -63,8 +65,9 @@ export default function Sidebar({ toggleTheme }) {
           </NavLink>
         </li>
         <li className="nav-item" style={{ marginTop: '20px' }}>
-          <div className="nav-link" onClick={toggleTheme} style={{ cursor: 'pointer' }}>
-            <span>🌓</span>
+          <div className="nav-link" onClick={toggleTheme} style={{ cursor: 'pointer' }} title={isDark ? 'Ganti ke Mode Terang' : 'Ganti ke Mode Gelap'}>
+            <span>{isDark ? '☀️' : '🌙'}</span>
+            <span>{isDark ? 'Mode Terang' : 'Mode Gelap'}</span>
           </div>
         </li>
       </ul>
