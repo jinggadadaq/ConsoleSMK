@@ -20,15 +20,11 @@ Platform manajemen lab IT sekolah berstandar profesional untuk **SMKN 1 Kutasari
    git clone https://github.com/jinggadadaq/ConsoleSMK.git
    cd ConsoleSMK
    ```
-2. Salin file environment:
-   ```bash
-   cp .env.example .env
-   ```
-3. Jalankan seluruh service (Frontend, Backend, PostgreSQL, PgAdmin):
+2. Jalankan seluruh service (Frontend, Backend, PostgreSQL, PgAdmin):
    ```bash
    docker compose up -d
    ```
-4. Buka platform di browser: `http://localhost`
+3. Buka platform di browser: `http://localhost`
 
 ### Opsi B: Tanpa Docker (Local Manual)
 1. **Database PostgreSQL**: Pastikan PostgreSQL aktif dan eksekusi file `db/schema.sql` untuk membuat tabel & seed data awal.
@@ -69,12 +65,10 @@ Metode ini cocok untuk deployment lokal sekolah (LAN) atau VPS Linux (Debian/Ubu
    ```bash
    sudo apt update && sudo apt install -y docker.io docker-compose git
    ```
-2. **Clone & Setup Environment**:
+2. **Clone repositori**:
    ```bash
    git clone https://github.com/jinggadadaq/ConsoleSMK.git
    cd ConsoleSMK
-   cp .env.example .env
-   chmod 600 .env
    ```
 3. **Konfigurasi Domain & SSL (Certbot)**:
    Jika menggunakan domain publik (misal: `lab.smkn1kutasari.sch.id`):
@@ -166,7 +160,7 @@ Jika ingin memublikasikan aplikasi secara gratis ke cloud internet tanpa server 
   - Pastikan backend API aktif dan CORS diizinkan.
   - Jika menggunakan Vercel, pastikan URL API backend menggunakan protokol `https://`.
 - **Database Connection Error**:
-  - Pastikan host, username, password, dan nama database di `.env` sudah benar.
+  - Pastikan konfigurasi host, username, password, dan nama database sudah benar di environment variables server/container.
   - Untuk PostgreSQL cloud (seperti Supabase/Neon), pastikan SSL mode diizinkan.
 
 ---
