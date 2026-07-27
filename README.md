@@ -1,4 +1,4 @@
-# SMKN 1 KUTASARI — LAB CONSOLE (Platform Candradimuka)
+# LAB CONSOLE Platform Candradimuka
 
 ![Go](https://img.shields.io/badge/Go-1.22+-00ADD8?style=flat&logo=go)
 ![React](https://img.shields.io/badge/React-18-61DAFB?style=flat&logo=react)
